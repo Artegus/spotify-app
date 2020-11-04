@@ -1,0 +1,100 @@
+<html ng-app="PlayerApp">
+
+<head>
+    <title>Thirtify</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,700' rel='stylesheet' type='text/css'>
+</head>
+
+<body ng-controller="AppController">
+    <div class="fullview playerview">
+        <div>
+            <!-- top bar -->
+            <div class="topgroup">
+                <div class="searchbox">
+                    <input type="text" placeholder="Search..." />
+                </div>
+                <div class="titlebox">
+                    <a href="#/home">SAMPLE PLAYER APPLICATION</a>
+                </div>
+                <div class="userbox">
+                    Signed in as <b>Default User</b>
+                    <a href="#">Log out</a>
+                </div>
+            </div>
+            <!-- mid group -->
+            <div class="midgroup">
+                <div class="menuview">
+                    <div class="list scrollable">
+                        <b><a href="#/">MAIN</a></b>
+                        <ul class="menuitems">
+                            <li><a href="#/">Browse</a></li>
+                        </ul>
+                        <b><a href="#/me">BROWSER</a></b>
+                        <ul class="menuitems">
+                            <li><a>Genres</a></li>
+                        </ul>
+                        <b><a href="#/me">PLAYLISTS</a></b>
+                        <ul class="menuitems">
+                            <li>
+                                <a>{{pl.name}}</a>
+                                <input class="edit" type="text" value="{{pl.name}}" name="title">
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="preview">
+                        <a href="#/albums/{{trackdata.album.id}}">
+                            <responsive-cover ng-model="trackdata.album.images"></responsive-cover>
+                        </a>
+                        <p>
+                            <b>{{trackdata.name}}</b>
+                            <a href="#/artists/{{trackdata.artists[0].id}}">
+                                {{trackdata.artists[0].name}}
+                            </a>
+                        </p>
+                    </div>
+                </div>
+                <div class="mainview">
+                    <div ng-view></div>
+                </div>
+            </div>
+
+            <div class="bottomgroup">
+                <div class="leftcontrols">
+                    <div class="prevbutton">
+                        <a><img src="images/btn-prev.png" alt='prev' /></a>
+                    </div>
+
+                    <div class="playbutton">
+                        <a><img src="images/btn-play.png" alt="play" /></a>
+                        <!--<a ><img src="images/btn-pause.png" alt="pause"/></a>-->
+                    </div>
+                    <div class="nextbutton">
+                        <a><img src="images/btn-next.png" alt="next" /></a>
+                    </div>
+                    <div class="volume">
+                        <input type="range" min="0" max="100" />
+                    </div>
+                </div>
+                <div class="seekcontrols">
+                    <div class="progress">{{ progress | displaytime }}</div>
+                    <div class="duration">{{ duration | displaytime }}</div>
+                    <div class="slider">
+                        <input type="range" min="0" max="{{duration}}" />
+                    </div>
+                </div>
+                <div class="rightcontrols">
+                    <!--
+						a ng-click="shuffle()">SHUF</a>
+						a ng-click="repeat()">REP.</a>
+						-->
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
+
+<!-- Both this file and the css file belong to the following repository: https://github.com/possan/webapi-player-example -->
