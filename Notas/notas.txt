@@ -1,0 +1,6 @@
+Coger como idea: https://open.spotify.com/
+
+
+Claro si cojo este ejemplo no podré hacer el proyecto como dice el profesor
+(me refiero a que no podré hacer classes playlist ni tracks o sí. Yo creo que
+sí pero todo sería un coñazo y el tiempo que nos da tampoco es tanto)
