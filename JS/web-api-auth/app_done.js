@@ -4,7 +4,6 @@ const APIController = (function () {
 
     const client_id = '49a52023a4f447ce86507bc0e636fed1'; // Your client ID
     const client_secret = '39c63715bd964d58af65657966b99172'; // Your client secrect
-    const rediret_uri = ''; // Your rediret URI
 
     // private methods
     const _getToken = async () => {
