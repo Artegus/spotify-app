@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../CSS/new_releases.css">
+    <title>Spotify - Browser</title>
+</head>
+
+<body>
+    <header>
+        <a href="../spotify_home.html" target="_blank" rel="noopener noreferrer" id="logo"> 
+            <img src="../../img/Spotify_Logo_CMYK_White.png" alt="spotify" width="170px">
+        </a>
+        <input type="button" value ='View on spotify' class="button-redirect" id='button-spotify'>
+    </header>
+
+    <main class="main-container">
+        <input type="hidden" id='hidden_token'>
+        <section class="new-releases-section">
+            <h2>New Releases</h2>
+            <div class="parent"></div>
+        </section>
+
+        <section class="new-releases-section">
+            <h2>Featured</h2>
+            <div class="parent"></div>
+        </section>
+
+        <section class="new-releases-section">
+            <h2>Top List</h2>
+            <div class="parent"></div>
+        </section>
+
+    </main>
+
+    <script type='module' src="../../JS/web-api-auth/test.js"></script>
+    <script type='module' src="../../JS/web-api-auth/test2.js"></script>
+
+</body>
+
+</html>
