@@ -1,8 +1,9 @@
 class Playlist {
-    constructor (name) {
+    constructor (id, name) {
+        this.id = id;
         this._name = name;
         this._amountOftracks = this.calculateAmountOfTracks || 0;
-        this._listOfTracks = listOfTracks || [] // Contendrá un lista con canciones
+        this._listOfTracks = listOfTracks || [] // Será un array con canciones
         this._totalDuration = this.calculateDuration;
     }
     // Getter
