@@ -154,6 +154,8 @@ const execute = async () => {
 
     console.log(track.preview_url) // Con esto podríamos reproducir canciones. (30 seg)
     
+    // https://developers.google.com/web/updates/2016/03/play-returns-promise
+
     const audio = new Audio(track_previuw_url)
     audio.play().then(function(){
 
