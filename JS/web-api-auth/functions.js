@@ -203,8 +203,54 @@ const UIController_Overview = (function() {
 })();
 
 
+const UIController_Main = (function() {
 
-export {APIcontroller, UIController_Overview};
+    const DOMElements = {
+        titleRecommendAlbum : '#title-recommend-album', // Estatico
+        recommendPlaylists : '#recommend-playlists', // Estatico
+        userPlaylists : '#user-playlists', // Dinamic
+        imagePreviewTrack : '#image-track-preview', // Dinamic
+        headerPlaylist : '#header-playlist', // Dinamic
+        contentMainPage : '#content-main', // Podria usar solo este id para crear todo el contenido de la playlist.
+        extraInfoPlaylist : '#extra-info-playlist', //Dinamic
+        tracksTableBody : '#list-tracks',
+        hiddenToken : '#token'
+        // podría crear todo lo que va dentro del contenido de cada playlist desde su padre usado el id de content-main
+        // Creando primero el header (playlist info), luego la infoextra (more info about playlist) y depués la tabla con las canciones.
+    }
+
+
+    return {
+        containerField() {
+            return {
+                imagePreviewTrack : document.querySelector(DOMElements.imagePreviewTrack),
+                headerPlaylist : document.querySelector(DOMElements.headerPlaylist),
+                tracksPlaylist : document.querySelector(DOMElements.tracksTableBody),
+                contentMainPlaylist : document.querySelector(DOMElements.contentMainPage),
+                extraInfoPlaylist : document.querySelector(DOMElements.extraInfoPlaylist)
+            }
+        },
+        createPlaylist(name, url){
+            const html = `<li><a href='#' value=${url}>${name}</a></li>`;
+            document.querySelector(DOMElements.recommendPlaylists).insertAdjacentHTML('beforeend', html)
+        },
+        storeToken(token) {
+            document.querySelector(DOMElements.hiddenToken).value = token
+        },
+        getStoredToken(){
+            return {
+                token : document.querySelector(DOMElements.hiddenToken).value
+            }
+        }
+
+
+    }
+
+})();
+
+
+
+export {APIcontroller, UIController_Overview, UIController_Main};
 
 const execute = async () => {
     var token = await APIcontroller.getToken()

@@ -1,4 +1,4 @@
-<html ng-app="PlayerApp">
+<html>
 
 <head>
     <title>Spotify - Clone</title>
@@ -7,6 +7,7 @@
 </head>
 
 <body>
+    <input type="hidden" id='hidden_token'>
     <div class="fullview playerview">
         <div>
             <!-- top bar -->
@@ -27,17 +28,19 @@
                 <div class="menuview">
                     <div class="list scrollable">
                         <b>
-                            <a href="#/">Playlist of ...</a>
+                            <a href="#/" id='title-recommend-albun'>Playlist of ...</a> <!-- Playlist Title -->
                         </b>
-                        <ul class="menuitems">
+                        <ul class="menuitems" id='recommend-playlists'>
+                            <!-- Elements of Playlist -->
                             <li><a href="#/">playlist_prueba1</a></li>
                             <li><a href="#/">playlist_prueba2</a></li>
                         </ul>
-                        <b><a href="#/me">Create a new Playlist</a></b>
-                        <ul class="menuitems">
-                        </ul>
-                        <b><a href="#/me"> Your PlayList</a></b>
-                        <ul class="menuitems">
+                        <b>
+                            <a href="#">Create a new Playlist</a></b> <!-- Add event to create playlist -->
+                        <b>
+                            <a href="#">Your PlayLists</a>
+                        </b>
+                        <ul class="menuitems" id='user-playlists'>
                             <li>
                                 <a>playList_created_1</a>
                                 <input class="edit" type="text" value="{{pl.name}}" name="title">
@@ -52,7 +55,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="preview">
+                    <div class="preview" id='#image-track-preview'>
                         <!-- Imagen de la canción -->
                         <a href="#/albums/7Jl54jIBzvZjzED55yLj23">
                             <img class="ng-isolate-scope ng-pristine ng-valid" src="#" />
@@ -64,33 +67,42 @@
                                 {{trackdata.artists[0].name}}
                             </a>
                         </p>
+                        <!--Hasta aquí-->
                     </div>
                 </div>
                 <div class="mainview">
                     <div class="ng-scope">
-                        <div class="ng-scope">
-                            <header class="ng-scope">
-                                <div class="ng-isolate-scope ng-pristine ng-valid"><!-- Create a cover  -->
-                                    <div class="cover" 
+                        <div class="ng-scope" id='content-main'>
+                            <!-- Content main page -->
+                            <header class="ng-scope" id='header-playlist'>
+                                <div class="ng-isolate-scope ng-pristine ng-valid">
+                                    <!-- Create a cover  -->
+                                    <div class="cover"
                                         style="background-image:url(https://i.scdn.co/image/ab67706f00000003ca5a7517156021292e5663a6)">
                                     </div>
                                 </div>
-                                <h4 class="ng-hide">COLLABORATIVE PLAYLIST</h4> <!--Colaborative or not-->
+                                <h4 class="ng-hide">COLLABORATIVE PLAYLIST</h4>
+                                <!--Colaborative or not-->
                                 <h4 class="">PLAYLIST</h4> <!-- nan -->
-                                <h1 class="ng-binding">Peaceful Piano</h1> <!--Name of playlist-->
+                                <h1 class="ng-binding">Peaceful Piano</h1>
+                                <!--Name of playlist-->
                                 <p class="ng-binding">Relax and indulge with
-                                    beautiful piano pieces</p> <!--Description-->
+                                    beautiful piano pieces</p>
+                                <!--Description-->
                                 <div class="follower-count ng-binding">6,039,067 followers</div> <!-- Followers -->
                             </header>
+                            <div id="extra-info-playlist">
+                                <hr class="ng-scope">
+                                <!--More info about playlist-->
+                                <p class="ng-scope ng-binding">Created by: <a href="#/users/spotify"
+                                        class="ng-binding">spotify</a> · 297 songs · 4:29:10</p>
+                                <!-- p>{{data.followers.total}} Followers</p -->
+                                <hr class="ng-scope">
+                                <br class="ng-scope">
+                            </div>
 
-                            <hr class="ng-scope"> <!--More info about playlist-->
-                            <p class="ng-scope ng-binding">Created by: <a href="#/users/spotify"
-                                    class="ng-binding">spotify</a> · 297 songs · 4:29:10</p>
-                            <!-- p>{{data.followers.total}} Followers</p -->
-                            <hr class="ng-scope">
-                            <br class="ng-scope">
-
-                            <table class="tracks ng-scope"> <!--Table of playlist's tracks-->
+                            <table class="tracks ng-scope">
+                                <!--Table of playlist's tracks-->
                                 <thead>
                                     <tr>
                                         <th></th>
@@ -101,10 +113,11 @@
                                         <th>ADDED</th>
                                     </tr>
                                 </thead>
-                                <tbody> <!--Example of track-->
+                                <tbody id='list-tracks'>
+                                    <!--Example of track-->
                                     <tr class="ng-scope">
                                         <td>
-                                            <button class="ng-binding"> + </button>
+                                            <button class="ng-binding"> + </button> <!--Si implemento la reproducción entonces usaré este boton-->
                                         </td>
                                         <td>
                                             <a class="ng-binding">Sonder</a>
@@ -133,20 +146,20 @@
                     </div>
                 </div>
             </div>
-            
+
             <!--Don't work-->
             <div class="bottomgroup">
                 <div class="leftcontrols">
                     <div class="prevbutton">
-                        <a><img src="images/btn-prev.png" alt='prev' /></a>
+                        <a><img src="#" alt='prev' /></a>
                     </div>
 
                     <div class="playbutton">
-                        <a><img src="images/btn-play.png" alt="play" /></a>
+                        <a><img src="#" alt="play" /></a>
                         <!--<a ><img src="images/btn-pause.png" alt="pause"/></a>-->
                     </div>
                     <div class="nextbutton">
-                        <a><img src="images/btn-next.png" alt="next" /></a>
+                        <a><img src="#" alt="next" /></a>
                     </div>
                     <div class="volume">
                         <input type="range" min="0" max="100" />
@@ -169,6 +182,12 @@
         </div>
     </div>
 
+
+    <script src="../JS/classes/Track.js"></script>
+    <script src="../JS/classes/Playlist.js"></script>
+    <script src="../JS/classes/User.js"></script>
+    <script type="module" src="../JS/web-api-auth/functions.js"></script>
+    <script type="module" src="../JS/web-api-auth/spotify_main.js"></script>
 </body>
 
 </html>
