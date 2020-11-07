@@ -315,7 +315,7 @@ hr {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	padding: 2px 15px;
+	padding: 0;
 	margin: 0;
 	cursor: pointer;
 }
@@ -614,4 +614,16 @@ responsive-cover.responsive-cover-playlist {
 }
 ::-webkit-scrollbar-corner {
   background-color: #1c1c1f;
+}
+
+#recommend-playlists a{
+	display: inline-block;
+	width: 100%;
+	padding: 2px 15px;
+}
+
+#user-playlists a{
+	display: inline-block;
+	width: 100%;
+	padding: 2px 15px;
 }

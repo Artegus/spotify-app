@@ -1,8 +1,8 @@
 class Track {
     
-    constructor (name, author, album, duration) {
+    constructor (name, artist, album, duration) {
         this._name = name;
-        this._author = author;
+        this._artist = artist;
         this._album = album;
         this._duration = duration;
     }
@@ -11,8 +11,8 @@ class Track {
     get name () {
         return this._name;
     }
-    get author () {
-        return this._author;
+    get artist () {
+        return this._artist;
     }
     get album () {
         return this._album;

@@ -52,8 +52,8 @@ const APIcontroller = (function() {
     }
 
     const _getTracks = async (token, tracksEndPoint) => { //OK. Solicita canciones de una playlist.
-        const limit = 5;
-        const response = await fetch(`${tracksEndPoint}?limit=${5}`, {
+        const limit = 10;
+        const response = await fetch(`${tracksEndPoint}?limit=${limit}`, {
             method : 'GET',
             headers : {
                 'Authorization' : 'Bearer ' + token
@@ -99,6 +99,17 @@ const APIcontroller = (function() {
         return data.playlists.items
     }
 
+    const _getPlaylist = async (token, api_url_playlist) => {
+        const response = await fetch(api_url_playlist, {
+            method : 'GET',
+            headers : {
+                'Authorization' : 'Bearer ' + token
+            }
+        })
+        const data = await response.json()
+        return data;
+    }
+
     return {
         getToken() {
             return _getToken();
@@ -123,7 +134,10 @@ const APIcontroller = (function() {
         },
         getTrack(token, trackEndPoint){
             return _getTrack(token, trackEndPoint);
-        }
+        },
+        getPlaylist(token, api_url_playlist) {
+            return _getPlaylist(token, api_url_playlist);
+        } 
     }
 
 })();
@@ -214,7 +228,7 @@ const UIController_Main = (function() {
         contentMainPage : '#content-main', // Podria usar solo este id para crear todo el contenido de la playlist.
         extraInfoPlaylist : '#extra-info-playlist', //Dinamic
         tracksTableBody : '#list-tracks',
-        hiddenToken : '#token'
+        hiddenToken : '#hidden_token',
         // podría crear todo lo que va dentro del contenido de cada playlist desde su padre usado el id de content-main
         // Creando primero el header (playlist info), luego la infoextra (more info about playlist) y depués la tabla con las canciones.
     }
@@ -227,12 +241,52 @@ const UIController_Main = (function() {
                 headerPlaylist : document.querySelector(DOMElements.headerPlaylist),
                 tracksPlaylist : document.querySelector(DOMElements.tracksTableBody),
                 contentMainPlaylist : document.querySelector(DOMElements.contentMainPage),
-                extraInfoPlaylist : document.querySelector(DOMElements.extraInfoPlaylist)
+                extraInfoPlaylist : document.querySelector(DOMElements.extraInfoPlaylist),
+                recommendPlaylists : document.querySelector(DOMElements.recommendPlaylists),
             }
         },
-        createPlaylist(name, url){
-            const html = `<li><a href='#' value=${url}>${name}</a></li>`;
+        createPlaylist(name, api_url_playlist, tracksEndPoint){
+            const html = `<li><a href='#' helper=${tracksEndPoint} value=${api_url_playlist}>${name}</a></li>`;
             document.querySelector(DOMElements.recommendPlaylists).insertAdjacentHTML('beforeend', html)
+        },
+        createTrack(name, artist, duration, album, date_added, url_preview, posicionFila) {
+            const track = new Track(name, artist, album, duration);
+            const inputCheckbox = document.createElement('input');
+            inputCheckbox.type = 'checkbox'
+            inputCheckbox.track = track;
+            
+            const html = `
+            <tr class="ng-scope">
+                <td>
+                    <button class="ng-binding" value=${url_preview}> + </button>
+                </td>
+                <td>
+                    <a class="ng-binding">${name}</a>
+                </td>
+                <td>
+                    <a class="ng-binding">${artist}</a>
+                </td>
+                <td class="nowrap ng-binding">${duration}</td>
+                <td>
+                    <a class="ng-binding">${album}</a>
+                </td>
+                <td class="nowrap ng-binding">${date_added}</td>
+            </tr>`;
+            // Add to table
+            document.querySelector(DOMElements.tracksTableBody).insertAdjacentHTML('beforeend', html)
+            // Add to track
+            //document.querySelector(DOMElements.tracksTableBody).insertAdjacentElement('beforeend', inputCheckbox)
+            document.getElementsByTagName('tr')[posicionFila].insertAdjacentElement('beforeend', inputCheckbox)
+        },
+        resetTracks() {
+            this.containerField().tracksPlaylist.innerHTML = '';
+        },
+        resetPlaylistInfo() {
+            this.containerField().headerPlaylist.innerHTML = '';
+        },
+        addButtonToAddTracksToPlaylist(){
+            const html = `<input type='button'value='Add to Playlist' id='addToPlaylist'>`
+            document.querySelector(DOMElements.tracksTableBody).insertAdjacentHTML('beforeend', html)
         },
         storeToken(token) {
             document.querySelector(DOMElements.hiddenToken).value = token

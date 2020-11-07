@@ -21,7 +21,6 @@ const APPController = (function(APICtrl, UICtrl) {
         const playlistsOfTopListCategory = await APICtrl.getCategoryPlaylists(token, 'toplists') // Esto se haría de otra forma, solo meto el valor 'toplist' para está página
 
         var number = 1; // This number is needed to assign a different class to each component of the grid
-        console.log(playlistsOfTopListCategory)
         releasesAlbums.forEach((album) => {
             // Collect the information i need
 
@@ -66,6 +65,7 @@ const APPController = (function(APICtrl, UICtrl) {
         init() {
             console.log(`loading images`);
             loadImages();
+            console.log('ok :)')
         }
     }
 

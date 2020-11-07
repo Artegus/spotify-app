@@ -192,9 +192,9 @@ const APPController = (function (UICtrl, APICtrl) {
         // get track endpoint based on the selected playlist
         const tracksEndPoint = playlistSelect.options[playlistSelect.selectedIndex].value;
         // get the list of tracks
-        //const tracks = await APICtrl.getTracks(token, tracksEndPoint);
+        const tracks = await APICtrl.getTracks(token, tracksEndPoint);
         // create a track list item
-        //tracks.forEach(el => UICtrl.createTrack(el.track.href, el.track.name))
+        tracks.forEach(el => UICtrl.createTrack(el.track.href, el.track.name))
     })
     /*
     // create song selection click event listener

@@ -28,12 +28,13 @@
                 <div class="menuview">
                     <div class="list scrollable">
                         <b>
-                            <a href="#/" id='title-recommend-albun'>Playlist of ...</a> <!-- Playlist Title -->
+                            <a href="#/" id='title-recommend-albun'>Playlists of Top List</a> <!-- Playlist Title -->
                         </b>
                         <ul class="menuitems" id='recommend-playlists'>
-                            <!-- Elements of Playlist -->
+                            <!-- Elements of Playlist 
                             <li><a href="#/">playlist_prueba1</a></li>
                             <li><a href="#/">playlist_prueba2</a></li>
+                            -->
                         </ul>
                         <b>
                             <a href="#">Create a new Playlist</a></b> <!-- Add event to create playlist -->
@@ -43,15 +44,12 @@
                         <ul class="menuitems" id='user-playlists'>
                             <li>
                                 <a>playList_created_1</a>
-                                <input class="edit" type="text" value="{{pl.name}}" name="title">
                             </li>
                             <li>
                                 <a>playList_created_1</a>
-                                <input class="edit" type="text" value="{{pl.name}}" name="title">
                             </li>
                             <li>
                                 <a>playList_created_1</a>
-                                <input class="edit" type="text" value="{{pl.name}}" name="title">
                             </li>
                         </ul>
                     </div>
@@ -114,29 +112,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id='list-tracks'>
-                                    <!--Example of track-->
-                                    <tr class="ng-scope">
-                                        <td>
-                                            <button class="ng-binding"> + </button> <!--Si implemento la reproducción entonces usaré este boton-->
-                                        </td>
-                                        <td>
-                                            <a class="ng-binding">Sonder</a>
-                                        </td>
-                                        <td>
-                                            <a href="#/artists/39u6Bl8CfMjzqKVaM3JsTJ" class="ng-binding">Niall
-                                                Byrne</a>
-                                        </td>
-                                        <td class="nowrap ng-binding">
-                                            2:18
-                                        </td>
-                                        <td>
-                                            <a href="#/albums/56CCqTnTPRi0pctNLKWHcS" class="ng-binding">Sonder</a>
-                                        </td>
-                                        <td class="nowrap ng-binding">
-                                            2 days ago
-                                        </td>
-                                        <!-- ngIf: data.collaborative -->
-                                    </tr><!-- end ngRepeat: t in tracks -->
+                                    
                                 </tbody>
                             </table>
                             <br class="ng-scope">
