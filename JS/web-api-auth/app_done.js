@@ -196,7 +196,7 @@ const APPController = (function (UICtrl, APICtrl) {
         // create a track list item
         tracks.forEach(el => UICtrl.createTrack(el.track.href, el.track.name))
     })
-    /*
+    
     // create song selection click event listener
     DOMInputs.tracks.addEventListener('click', async (e) => {
         // prevent page reset
@@ -210,9 +210,8 @@ const APPController = (function (UICtrl, APICtrl) {
         const track = await APICtrl.getTrack(token, trackEndpoint);
         // load the track details
         UICtrl.createTrackDetail(track.album.images[2].url, track.name, track.artists[0].name);
-    });   
+    });    
 
-    */
 
     return {
         init() {
