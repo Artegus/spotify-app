@@ -12,6 +12,8 @@ const APIcontroller = (function() {
     const client_id = '49a52023a4f447ce86507bc0e636fed1'; // Your client ID
     const client_secret = '39c63715bd964d58af65657966b99172'; // Your client secrect
 
+
+
     const _getToken = async () => { // OK. Solicitar token. (Dura una hora)
         // Petición al servicio de spotify
         const response = await fetch('https://accounts.spotify.com/api/token', { 
@@ -22,6 +24,7 @@ const APIcontroller = (function() {
             },
             body : 'grant_type=client_credentials'
         })
+
         const data = await response.json()
         return data.access_token;
     }
@@ -37,6 +40,7 @@ const APIcontroller = (function() {
         const data = await response.json()
         return data.categories.items
     }
+
     const _getCategoryPlaylists = async (token, categoryId) => { // OK. Solicitar playlist de un tipo de categoría
         const limit = 10;
 
@@ -249,7 +253,7 @@ const UIController_Main = (function() {
             const html = `<li><a href='#' helper=${tracksEndPoint} value=${api_url_playlist}>${name}</a></li>`;
             document.querySelector(DOMElements.recommendPlaylists).insertAdjacentHTML('beforeend', html)
         },
-        createTrack(name, artist, duration, album, date_added, url_preview, posicionFila) {
+        createTrack(name, artist, duration, album, date_added, url_preview, trackEndPoint, posicionFila) {
             const track = new Track(name, artist, album, duration);
             const inputCheckbox = document.createElement('input');
             inputCheckbox.type = 'checkbox'
@@ -258,7 +262,7 @@ const UIController_Main = (function() {
             const html = `
             <tr class="ng-scope">
                 <td>
-                    <button class="ng-binding" value=${url_preview}> + </button>
+                    <button class="ng-binding" value=${url_preview} data-song=${trackEndPoint}> + </button>
                 </td>
                 <td>
                     <a class="ng-binding">${name}</a>
@@ -292,7 +296,7 @@ const UIController_Main = (function() {
             <!--Name of playlist-->
             <p class="ng-binding">${description}</p>
             <!--Description-->
-            <div class="follower-count ng-binding">${followers}followers</div>
+            <div class="follower-count ng-binding">${followers} followers</div>
             `;
             document.querySelector(DOMElements.headerPlaylist).innerHTML = html;
         },
@@ -330,9 +334,28 @@ const UIController_Main = (function() {
 
 })();
 
+const audioPlayer = (function() {
 
 
-export {APIcontroller, UIController_Overview, UIController_Main};
+    const _playAudioHTML = (track_previuw_url) => {
+        if (track_previuw_url != 'null') {
+            const audio = document.getElementById('audio')
+            audio.src = track_previuw_url;
+            audio.play();
+        } else {
+            alert('No preview avalible')
+        }
+    }
+
+    return {
+        playAudioHTML(track_previuw_url){
+            return _playAudioHTML(track_previuw_url);
+        }
+    }
+
+})();
+
+export {APIcontroller, UIController_Overview, UIController_Main, audioPlayer};
 
 const execute = async () => {
     var token = await APIcontroller.getToken()
