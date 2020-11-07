@@ -11,7 +11,7 @@ const APPController = (function(APICtrl, UICtrl){
         // Store token
         UICtrl.storeToken(token);
         // Get playlists 'toplist'
-        const toplistPlaylists = await APICtrl.getCategoryPlaylists(token, 'toplists')
+        const toplistPlaylists = await APICtrl.getCategoryPlaylists(token, 'rock')
         // Add the elements to thhe interface 
         toplistPlaylists.forEach((playlist) => {
             // Get info for each playlist
@@ -49,13 +49,27 @@ const APPController = (function(APICtrl, UICtrl){
         const playlistReference = linkSelected.attributes[2].value
         // Get playlist
         const playlistSelected = await APICtrl.getPlaylist(token, playlistReference)
+        
+        // Create information of playlist selected
+        const {
+            name,
+            description,
+            followers : {total: followers},
+            images : [{url : img_playlist}],
+            owner : {display_name : owner},
+            tracks : {total : totalTracks}
+        } = playlistSelected
+        UICtrl.createPlaylistInfo(name, description, img_playlist, followers);
+        UICtrl.createPlaylistExtraInfo(owner, totalTracks);
         // Get tracksEndPoint
         const tracksEndPoint = linkSelected.attributes[1].value
         // Get tracks of playlist
         const tracks = await APICtrl.getTracks(token, tracksEndPoint) 
         // Posición checkbox
         var posicionFila = 0; // Apañado para ir poniendo el chekcbox en cada una de las filas
+        // Add track to tbody
         tracks.forEach((track) => {
+            
             // Get info for each track
             const {
                 track : {
@@ -69,12 +83,17 @@ const APPController = (function(APICtrl, UICtrl){
                     artists : [{ name : artist }]
                 }
             } = track
+
+             // Itero la posición.
             posicionFila += 1;
             UICtrl.createTrack(nameTrack, artist, Math.floor(duration * 0.001), 'single', date, url_song, posicionFila)
-             // Itero la posición.
         })
+
         // Add button to add tracks to playlist
         UICtrl.addButtonToAddTracksToPlaylist();
+        // Add image of album
+        
+
 
     })
 
@@ -83,8 +102,8 @@ const APPController = (function(APICtrl, UICtrl){
 
     return {
         init() {
-            console.log('loading')
             loadRecommendedPlaylist();
+            console.log('ok :)');
         }
     }
 

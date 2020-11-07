@@ -278,6 +278,34 @@ const UIController_Main = (function() {
             //document.querySelector(DOMElements.tracksTableBody).insertAdjacentElement('beforeend', inputCheckbox)
             document.getElementsByTagName('tr')[posicionFila].insertAdjacentElement('beforeend', inputCheckbox)
         },
+        createPlaylistInfo(name, description, img_url, followers){
+            const html = `
+            <div class="ng-isolate-scope ng-pristine ng-valid">
+                <div class="cover"
+                    style="background-image:url(${img_url})">
+                </div>
+            </div>
+            <h4 class="ng-hide">COLLABORATIVE PLAYLIST</h4>
+            <!--Colaborative or not-->
+            <h4 class="">PLAYLIST</h4> <!-- nan -->
+            <h1 class="ng-binding">${name}</h1>
+            <!--Name of playlist-->
+            <p class="ng-binding">${description}</p>
+            <!--Description-->
+            <div class="follower-count ng-binding">${followers}followers</div>
+            `;
+            document.querySelector(DOMElements.headerPlaylist).innerHTML = html;
+        },
+        createPlaylistExtraInfo(owner, total_tracks){
+            const html = `
+            <hr class="ng-scope">
+            <!--More info about playlist-->
+            <p class="ng-scope ng-binding">Created by: <a href="#/users/spotify" class="ng-binding">${owner}</a> · ${total_tracks} songs</p>
+            <hr class="ng-scope">
+            <br class="ng-scope">
+            `;
+            document.querySelector(DOMElements.extraInfoPlaylist).innerHTML = html;
+        },
         resetTracks() {
             this.containerField().tracksPlaylist.innerHTML = '';
         },
