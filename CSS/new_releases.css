@@ -119,7 +119,6 @@ header #logo {
 /*Button to spotify*/
 
 .button-redirect {
-    -webkit-border-image: initial;
 	background: #1DB954;
 	border: initial;
     border-width: 1px;
