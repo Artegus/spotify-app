@@ -306,6 +306,18 @@ const UIController_Main = (function() {
             `;
             document.querySelector(DOMElements.extraInfoPlaylist).innerHTML = html;
         },
+        showSongMessageNotAvailable() {
+            const html = `
+            <div id='songNotAvailable'>
+                <p>Sorry, the song is not available.</p>
+            </div>
+            `;
+            document.querySelector(DOMElements.contentMainPage).insertAdjacentHTML('beforeend', html)
+
+        },
+        removeMessageSongNotAvailable(){
+            document.getElementById('songNotAvailable').remove()
+        },
         resetTrackPreview(){
             this.containerField().imagePreviewTrack.innerHTML = '';
         },
@@ -333,8 +345,7 @@ const UIController_Main = (function() {
 
 })();
 
-const audioPlayer = (function() {
-
+const audioPlayer = (function(UICtrl) {
 
     const _playAudioHTML = (track_previuw_url) => {
         if (track_previuw_url != 'null') {
@@ -342,7 +353,8 @@ const audioPlayer = (function() {
             audio.src = track_previuw_url;
             audio.play();
         } else {
-            alert('No preview avalible')
+            UICtrl.showSongMessageNotAvailable();
+            window.setTimeout(UICtrl.removeMessageSongNotAvailable, 1500)
         }
     }
 
@@ -352,6 +364,6 @@ const audioPlayer = (function() {
         }
     }
 
-})();
+})(UIController_Main);
 
 export {APIcontroller, UIController_Overview, UIController_Main, audioPlayer};
