@@ -1,13 +1,16 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
     <title>Spotify - Clone</title>
+    <meta charset="UTF-8">
     <link rel="stylesheet" href="../CSS/spotify_home.css" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,700' rel='stylesheet' type='text/css'>
 </head>
 
 <body>
     <input type="hidden" id='hidden_token'>
+    <audio id='audio' ></audio>
     <div class="fullview playerview">
         <div>
             <!-- top bar -->
@@ -31,10 +34,7 @@
                             <a href="#/" id='title-recommend-albun'>Playlists of Top List</a> <!-- Playlist Title -->
                         </b>
                         <ul class="menuitems" id='recommend-playlists'>
-                            <!-- Elements of Playlist 
-                            <li><a href="#/">playlist_prueba1</a></li>
-                            <li><a href="#/">playlist_prueba2</a></li>
-                            -->
+             
                         </ul>
                         <b>
                             <a href="#">Create a new Playlist</a></b> <!-- Add event to create playlist -->
@@ -53,50 +53,22 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="preview" id='#image-track-preview'>
-                        <!-- Imagen de la canción -->
-                        <a href="#/albums/7Jl54jIBzvZjzED55yLj23">
-                            <img class="ng-isolate-scope ng-pristine ng-valid" src="#" />
-                        </a>
-                        <p>
-                            <!-- Info track. Name and artist name-->
-                            <b>{{trackdata.name}}</b>
-                            <a href="#/artists/{{trackdata.artists[0].id}}">
-                                {{trackdata.artists[0].name}}
-                            </a>
-                        </p>
-                        <!--Hasta aquí-->
+                    <div class="preview" id='image-track-preview'>
+                        
                     </div>
                 </div>
                 <div class="mainview">
                     <div class="ng-scope">
                         <div class="ng-scope" id='content-main'>
-                            <!-- Content main page -->
+
                             <header class="ng-scope" id='header-playlist'>
-                                <!-- <div class="ng-isolate-scope ng-pristine ng-valid">
-                                    <div class="cover"
-                                        style="background-image:url(https://i.scdn.co/image/ab67706f00000003ca5a7517156021292e5663a6)">
-                                    </div>
-                                </div>
-                                <h4 class="ng-hide">COLLABORATIVE PLAYLIST</h4>
-                                <h4 class="">PLAYLIST</h4>
-                                <h1 class="ng-binding">Peaceful Piano</h1>
-                                <p class="ng-binding">Relax and indulge with
-                                    beautiful piano pieces</p>
-                                <div class="follower-count ng-binding">6,039,067 followers</div>  -->
+                                
                             </header>
                             <div id="extra-info-playlist">
                                 
-                                <!-- <hr class="ng-scope">
-                                <p class="ng-scope ng-binding">Created by: <a href="#/users/spotify"
-                                        class="ng-binding">spotify</a> · 297 songs · 4:29:10</p>
-                                <hr class="ng-scope">
-                                <br class="ng-scope"> -->
-
                             </div>
 
                             <table class="tracks ng-scope">
-                                <!--Table of playlist's tracks-->
                                 <thead>
                                     <tr>
                                         <th></th>
@@ -112,7 +84,6 @@
                                 </tbody>
                             </table>
                             <br class="ng-scope">
-
                             <hr class="ng-scope">
                         </div>
                     </div>
@@ -125,10 +96,8 @@
                     <div class="prevbutton">
                         <a><img src="#" alt='prev' /></a>
                     </div>
-
                     <div class="playbutton">
                         <a><img src="#" alt="play" /></a>
-                        <!--<a ><img src="images/btn-pause.png" alt="pause"/></a>-->
                     </div>
                     <div class="nextbutton">
                         <a><img src="#" alt="next" /></a>
@@ -138,17 +107,14 @@
                     </div>
                 </div>
                 <div class="seekcontrols">
-                    <div class="progress">{{ progress | displaytime }}</div>
-                    <div class="duration">{{ duration | displaytime }}</div>
+                    <div class="progress"> 00:00 | 00:00 </div>
+                    <div class="duration"> 00:00 | 00:00 </div>
                     <div class="slider">
                         <input type="range" min="0" max="{{duration}}" />
                     </div>
                 </div>
                 <div class="rightcontrols">
-                    <!--
-						a ng-click="shuffle()">SHUF</a>
-						a ng-click="repeat()">REP.</a>
-						-->
+                    
                 </div>
             </div>
         </div>
