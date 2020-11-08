@@ -618,7 +618,17 @@ ul.albums li p, ul.playlists li p, ul.genres li p {
 }
 .img-album-track {
 	display:block;
-	height:100%;
-	width:100%;
 	background-size: cover;
+	width: 220px;
+	height: 220px;
+}
+.button-play {
+	height: 30px;
+	width: 30px;
+	margin-left: 50px;
+	cursor: pointer;
+	border: none;
+	background: url(../img/btn-play.png);
+	background-size: cover;
+	transition: 0.3s ease-out;
 }
