@@ -71,7 +71,7 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
                     href : trackEndPoint,
                     preview_url : url_song,
                     duration_ms : duration,
-                    external_urls : {urlSpotifySong},
+                    external_urls : {spotify : urlSpotifySong},
                     album : {
                         release_date : date,
                         name : nameAlbum
