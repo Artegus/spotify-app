@@ -542,17 +542,6 @@ ul.albums li p, ul.playlists li p, ul.genres li p {
 	padding: 10px;
 }
 
-responsive-cover {
-	display:block;
-	height:100%;
-	width:100%;
-	background-size: cover;
-}
-
-responsive-cover.responsive-cover-playlist {
-  background-image: url('images/placeholder-playlist.png');
-}
-
 .searchresult {
 	overflow: hidden;
 }
@@ -626,4 +615,10 @@ responsive-cover.responsive-cover-playlist {
 	display: inline-block;
 	width: 100%;
 	padding: 2px 15px;
+}
+.img-album-track {
+	display:block;
+	height:100%;
+	width:100%;
+	background-size: cover;
 }
