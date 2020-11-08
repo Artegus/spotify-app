@@ -18,7 +18,7 @@ const APPController = (function(APICtrl, UICtrl) {
         // Get Features Playlists
         const featuredPlaylists = await APICtrl.getListOfFeaturedPlaylist(token);
         // Get a specidy playlist (top list)
-        const playlistsOfTopListCategory = await APICtrl.getCategoryPlaylists(token, 'toplists') // Esto se haría de otra forma, solo meto el valor 'toplist' para está página
+        const playlistsOfTopListCategory = await APICtrl.getCategoryPlaylists(token, 'toplists') // 'top list is only for test'
 
         var number = 1; // This number is needed to assign a different class to each component of the grid
         releasesAlbums.forEach((album) => {

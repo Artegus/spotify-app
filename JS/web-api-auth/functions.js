@@ -1,18 +1,8 @@
 
-// testing await keyword.
-/* async function doWork () {
-    const response = await makeRequest('Google')
-    console.log('Response Received')
-    const processedResponse = await processRequest(response)
-    console.log(processedResponse)
-} */
-
 const APIcontroller = (function() {
 
     const client_id = '49a52023a4f447ce86507bc0e636fed1'; // Your client ID
     const client_secret = '39c63715bd964d58af65657966b99172'; // Your client secrect
-
-
 
     const _getToken = async () => { // OK. Solicitar token. (Dura una hora)
         // Petición al servicio de spotify
@@ -149,8 +139,7 @@ const APIcontroller = (function() {
 
 const UIController_Overview = (function() {
 
-        //Object to hold references to html selects.
-
+    //Object to hold references to html selects.
     const DOMElements = {
         parentContainer : '.parent',
     }
@@ -224,17 +213,17 @@ const UIController_Overview = (function() {
 const UIController_Main = (function() {
 
     const DOMElements = {
-        titleRecommendAlbum : '#title-recommend-album', // Estatico
-        recommendPlaylists : '#recommend-playlists', // Estatico
-        userPlaylists : '#user-playlists', // Dinamic
-        imagePreviewTrack : '#image-track-preview', // Dinamic
-        headerPlaylist : '#header-playlist', // Dinamic
+        titleRecommendAlbum : '#title-recommend-album', 
+        recommendPlaylists : '#recommend-playlists', 
+        userPlaylists : '#user-playlists', 
+        imagePreviewTrack : '#image-track-preview', 
+        headerPlaylist : '#header-playlist', 
         contentMainPage : '#content-main', // Podria usar solo este id para crear todo el contenido de la playlist.
-        extraInfoPlaylist : '#extra-info-playlist', //Dinamic
+        extraInfoPlaylist : '#extra-info-playlist', 
         tracksTableBody : '#list-tracks',
         hiddenToken : '#hidden_token',
         // podría crear todo lo que va dentro del contenido de cada playlist desde su padre usado el id de content-main
-        // Creando primero el header (playlist info), luego la infoextra (more info about playlist) y depués la tabla con las canciones.
+        // Creando primero el header (playlist info), luego la infoextra (playlist más info), track preview y por último la tabla con las canciones.
     }
 
 
@@ -244,7 +233,7 @@ const UIController_Main = (function() {
                 imagePreviewTrack : document.querySelector(DOMElements.imagePreviewTrack),
                 headerPlaylist : document.querySelector(DOMElements.headerPlaylist),
                 tracksPlaylist : document.querySelector(DOMElements.tracksTableBody),
-                contentMainPlaylist : document.querySelector(DOMElements.contentMainPage),
+                contentMainPlaylist : document.querySelector(DOMElements.contentMainPage), // Este no lo uso.
                 extraInfoPlaylist : document.querySelector(DOMElements.extraInfoPlaylist),
                 recommendPlaylists : document.querySelector(DOMElements.recommendPlaylists),
             }
@@ -253,9 +242,9 @@ const UIController_Main = (function() {
             const html = `<li><a href='#' helper=${tracksEndPoint} value=${api_url_playlist}>${name}</a></li>`;
             document.querySelector(DOMElements.recommendPlaylists).insertAdjacentHTML('beforeend', html)
         },
-        createTrack(name, artist, duration, album, date_added, url_preview, trackEndPoint, posicionFila) {
+        createTrack(name, artist, duration, album, date_added, url_preview, trackEndPoint, urlSpotifySong, urlSpotifyArtist, posicionFila) {
             const track = new Track(name, artist, album, duration);
-            const inputCheckbox = document.createElement('input');
+            const inputCheckbox = document.createElement('input'); // Creación del checkbox para poder introducir en el el objecto track. 
             inputCheckbox.type = 'checkbox'
             inputCheckbox.track = track;
             
@@ -265,10 +254,10 @@ const UIController_Main = (function() {
                     <button class="ng-binding" value=${url_preview} data-song=${trackEndPoint}> + </button>
                 </td>
                 <td>
-                    <a class="ng-binding">${name}</a>
+                    <a class="ng-binding" target='_blank' href=${urlSpotifySong}>${name}</a>
                 </td>
                 <td>
-                    <a class="ng-binding">${artist}</a>
+                    <a class="ng-binding" target='_blank' href=${urlSpotifyArtist}>${artist}</a>
                 </td>
                 <td class="nowrap ng-binding">${duration}</td>
                 <td>
@@ -279,23 +268,31 @@ const UIController_Main = (function() {
             // Add to table
             document.querySelector(DOMElements.tracksTableBody).insertAdjacentHTML('beforeend', html)
             // Add to track
-            //document.querySelector(DOMElements.tracksTableBody).insertAdjacentElement('beforeend', inputCheckbox)
             document.getElementsByTagName('tr')[posicionFila].insertAdjacentElement('beforeend', inputCheckbox)
         },
-        createPlaylistInfo(name, description, img_url, followers){
+        createTrackPreview(name, urlSpotifyAlbum, nameArtist, imageUrl, artistId){
+            const html = `
+            <a target='_blank' href="${urlSpotifyAlbum}">
+                <img class="ng-isolate-scope ng-pristine ng-valid img-album-track" src=${imageUrl} />
+            </a>
+            <p>
+                <b>${name}</b>
+                <a target='_blank' href="https://open.spotify.com/artist/${artistId}">${nameArtist}t</a>
+            </p>
+            `;
+            document.querySelector(DOMElements.imagePreviewTrack).innerHTML = html;
+        },
+        createPlaylistInfo(name, description, imageUrl, followers){
             const html = `
             <div class="ng-isolate-scope ng-pristine ng-valid">
                 <div class="cover"
-                    style="background-image:url(${img_url})">
+                    style="background-image:url(${imageUrl})">
                 </div>
             </div>
             <h4 class="ng-hide">COLLABORATIVE PLAYLIST</h4>
-            <!--Colaborative or not-->
-            <h4 class="">PLAYLIST</h4> <!-- nan -->
+            <h4 class="">PLAYLIST</h4>
             <h1 class="ng-binding">${name}</h1>
-            <!--Name of playlist-->
             <p class="ng-binding">${description}</p>
-            <!--Description-->
             <div class="follower-count ng-binding">${followers} followers</div>
             `;
             document.querySelector(DOMElements.headerPlaylist).innerHTML = html;
@@ -303,12 +300,14 @@ const UIController_Main = (function() {
         createPlaylistExtraInfo(owner, total_tracks){
             const html = `
             <hr class="ng-scope">
-            <!--More info about playlist-->
-            <p class="ng-scope ng-binding">Created by: <a href="#/users/spotify" class="ng-binding">${owner}</a> · ${total_tracks} songs</p>
+            <p class="ng-scope ng-binding">Created by: <a href="#" class="ng-binding">${owner}</a> · ${total_tracks} songs</p>
             <hr class="ng-scope">
             <br class="ng-scope">
             `;
             document.querySelector(DOMElements.extraInfoPlaylist).innerHTML = html;
+        },
+        resetTrackPreview(){
+            this.containerField().imagePreviewTrack.innerHTML = '';
         },
         resetTracks() {
             this.containerField().tracksPlaylist.innerHTML = '';
@@ -356,74 +355,3 @@ const audioPlayer = (function() {
 })();
 
 export {APIcontroller, UIController_Overview, UIController_Main, audioPlayer};
-
-const execute = async () => {
-    var token = await APIcontroller.getToken()
-    var categories = await APIcontroller.getCategories(token)
-    var artists = await APIcontroller.getListOfFeaturedPlaylist(token)
-    const info = {
-        url : categories[0].icons[0].url,
-        name : categories[0].name,
-        height : categories[0].icons[0].height,
-        width : categories[0].icons[0].width,
-        id : categories[0].id
-    }
-
-
-
-/*     const html = `<img src=${info.url} value='${info.id}' alt="${info.name}" width="${info.width}" height="${info.height}">`;
-    document.querySelector('.form-container').insertAdjacentHTML('beforeend', html);
-
-    const categorieId = document.images[0].getAttribute('value') // Sera necesario que guarde la id de la categoria para traer las playlist de la misma.
-
-    var categoryPlaylists = await APIcontroller.getCategoryPlaylists(token, categorieId)
-    
-    const tracksEndPoint = categoryPlaylists[0].tracks.href;
-
-    var tracks = await APIcontroller.getTracks(token, tracksEndPoint);
-    const trackEndPoint = tracks[4].track.href;
-    console.log(tracks[0].track.href) // link de una canción (no equivocarse con el preview)
-
-    var track = await APIcontroller.getTrack(token, trackEndPoint);
-    const track_previuw_url = track.preview_url; // link para reproducir la canción.
-
-    const song = `<a value="${track_previuw_url}" id='1'></a>`;
-    document.querySelector('.form-container').insertAdjacentHTML('beforeend', song);
-
-    console.log(track.preview_url) // Con esto podríamos reproducir canciones. (30 seg)
-    
-    // https://developers.google.com/web/updates/2016/03/play-returns-promise
-
-    const audio = new Audio(track_previuw_url)
-    audio.play().then(function(){
-
-    }).catch(function(error) {
-
-    }) */
-
-}
-
-//execute()
-
-
-
-/* const APPController = (function (APICtrl) {
-
-    // get genres on page load
-    const loadGenres = async () => {
-        //get the token
-        const token = await APICtrl.getToken();
-        //store the token onto the page 
-        //get the genres
-        const genres = await APICtrl.getCategories(token);
-        // populate our genres select element
-    }
-
-    return {
-        init() {
-            console.log('app is staring')
-            loadGenres();
-        }
-    }
-})(APIcontroller);
- */
