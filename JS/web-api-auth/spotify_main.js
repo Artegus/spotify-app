@@ -11,7 +11,7 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
         // Store token
         UICtrl.storeToken(token);
         // Get playlists 'toplist'
-        const toplistPlaylists = await APICtrl.getCategoryPlaylists(token, 'rock')
+        const toplistPlaylists = await APICtrl.getCategoryPlaylists(token, 'toplists')
         // Add the elements to thhe interface 
         toplistPlaylists.forEach((playlist) => {
             // Get info for each playlist

@@ -32,7 +32,7 @@ const APIcontroller = (function() {
     }
 
     const _getCategoryPlaylists = async (token, categoryId) => { // OK. Solicitar playlist de un tipo de categoría
-        const limit = 10;
+        const limit = 15;
 
         const response = await fetch(`https://api.spotify.com/v1/browse/categories/${categoryId}/playlists?locale=sv_US&limit=${limit}`, {
             method : 'GET',
@@ -46,7 +46,7 @@ const APIcontroller = (function() {
     }
 
     const _getTracks = async (token, tracksEndPoint) => { //OK. Solicita canciones de una playlist.
-        const limit = 10;
+        const limit = 25;
         const response = await fetch(`${tracksEndPoint}?limit=${limit}`, {
             method : 'GET',
             headers : {
@@ -251,7 +251,7 @@ const UIController_Main = (function() {
             const html = `
             <tr class="ng-scope">
                 <td>
-                    <button class="ng-binding" value=${url_preview} data-song=${trackEndPoint}> + </button>
+                    <button class="ng-binding button-play" value=${url_preview} data-song=${trackEndPoint}></button>
                 </td>
                 <td>
                     <a class="ng-binding" target='_blank' href=${urlSpotifySong}>${name}</a>
