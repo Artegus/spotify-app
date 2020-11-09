@@ -1,14 +1,14 @@
-class Usuario {
-    constructor(listOfPlaylists = []) {
+class User {
+    constructor() {
         this._name = 'Default user'
-        this._listaPlaylist = listOfPlaylists;
+        this._listOfPlaylists = [];
     }
 
     addNewPlaylist (playlist) {
-        this._listaPlaylist.push(playlist);
+        this._listOfPlaylists.push(playlist);
     }
     deletePlaylist (playlistId) {
-        this._listaPlaylist.findIndex(playlist => playlist.id == playlistId)
+        
     }
 
 }
