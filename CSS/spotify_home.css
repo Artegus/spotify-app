@@ -5,6 +5,7 @@
     --color-header : black;
 	--color-background-album : #181818da;
 	--color-song-not-available : #0c0c0cda;
+	--color-button : #535151da;
 }
 body {
 	background: #121314;
@@ -659,4 +660,40 @@ ul.albums li p, ul.playlists li p, ul.genres li p {
 	font-size: 0.8rem;
 	color: var(--color-text);
 	cursor: default;
+}
+#createNewPlaylist {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	border-radius: 10px;
+	background-color: var(--color-song-not-available);
+	width: auto;
+	padding: 10px;
+	position: absolute;
+	left:50%;
+	top:50%;
+	transform: translate(-50%,-50%);
+}
+#createNewPlaylist input[type='text']{
+	border: none;
+	color: var(--color-text);
+	background-color: var(--color-background-album);
+}
+.createNewPlaylist-options{
+	width: 100%;
+	display: flex;
+	margin-top: 22px;
+	flex-direction: row;
+	justify-content: space-evenly;
+}
+.createNewPlaylist-options input{
+	background-color: var(--color-button);
+	color: var(--color-info);
+	text-align: center;
+	font-size: 8pt;
+	border: none;
+	border-radius: 10px;
+	width: 80px;
+	cursor: pointer;
 }
