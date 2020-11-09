@@ -2,9 +2,10 @@ import {APIcontroller, UIController_Main, audioPlayer} from './functions.js';
 
 const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
 
-    // Get container field
+    // Get containers field
     const DOMcontainers = UICtrl.containerField();
-
+    // Create a default user
+    const defaultUser = new User();
     const loadRecommendedPlaylist = async () => {
         // Get token
         const token = await APICtrl.getToken()
@@ -113,6 +114,26 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
         }
     })
 
+    // Show windows to create a new playlist
+    DOMcontainers.buttonNewPlaylist.addEventListener('click', (e) => {
+        UICtrl.showWindowToCreateNewPlaylist();
+        const DOMbuttons = UICtrl.buttonField();
+
+        DOMbuttons.buttonCancelPlaylist.addEventListener('click', (e) => {
+            UICtrl.removeWindowToCreateNewPlaylist();
+        })
+
+        DOMbuttons.buttonCreatePlaylist.addEventListener('click', (e) => {
+            // Get name of playlist
+            const namePlaylist = document.getElementById('namePlaylist').value
+            // Create a new user playlist
+            UICtrl.createNewUserPlaylist(namePlaylist, defaultUser);
+            // Get playlist object
+            console.log(defaultUser)
+            UICtrl.removeWindowToCreateNewPlaylist();
+        })
+
+    })
     
     const playAudio = (trackSelected) => {
         // Get url of track  

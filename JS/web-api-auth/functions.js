@@ -222,6 +222,9 @@ const UIController_Main = (function() {
         extraInfoPlaylist : '#extra-info-playlist', 
         tracksTableBody : '#list-tracks',
         hiddenToken : '#hidden_token',
+        createANewPlaylist : '#newPlaylist',
+        buttonCreatePlaylist : 'createPlaylist',
+        buttonCancelPlaylist : 'cancelPlaylist'
         // podría crear todo lo que va dentro del contenido de cada playlist desde su padre usado el id de content-main
         // Creando primero el header (playlist info), luego la infoextra (playlist más info), track preview y por último la tabla con las canciones.
     }
@@ -236,6 +239,13 @@ const UIController_Main = (function() {
                 contentMainPlaylist : document.querySelector(DOMElements.contentMainPage), // Este no lo uso.
                 extraInfoPlaylist : document.querySelector(DOMElements.extraInfoPlaylist),
                 recommendPlaylists : document.querySelector(DOMElements.recommendPlaylists),
+                buttonNewPlaylist : document.querySelector(DOMElements.createANewPlaylist)
+            }
+        },
+        buttonField(){
+            return {
+                buttonCreatePlaylist : document.getElementById(DOMElements.buttonCreatePlaylist),
+                buttonCancelPlaylist : document.getElementById(DOMElements.buttonCancelPlaylist)
             }
         },
         createPlaylist(name, api_url_playlist, tracksEndPoint){
@@ -306,17 +316,50 @@ const UIController_Main = (function() {
             `;
             document.querySelector(DOMElements.extraInfoPlaylist).innerHTML = html;
         },
+        createNewUserPlaylist(name, user) {
+            // Create a playlist object
+            const playlist = new Playlist(name)
+            // Create item list 
+            const itemList_playlist = document.createElement('li')
+            // Create content
+            const a_playlist = document.createElement('a')
+            a_playlist.href = `#${name}`
+            a_playlist.innerHTML = name;
+            a_playlist.playlist = playlist
+            // Include content in item list
+            itemList_playlist.appendChild(a_playlist)
+            // Add playlist to user
+            user.addNewPlaylist(playlist)
+            // Add to playlists user
+            document.querySelector(DOMElements.userPlaylists).insertAdjacentElement('beforeend', itemList_playlist)
+        },
         showSongMessageNotAvailable() {
             const html = `
             <div id='songNotAvailable'>
                 <p>Sorry, the song is not available.</p>
             </div>
             `;
-            document.querySelector(DOMElements.contentMainPage).insertAdjacentHTML('beforeend', html)
+            document.querySelector('.midgroup').insertAdjacentHTML('beforeend', html)
 
         },
+        showWindowToCreateNewPlaylist() {
+            const html = `
+            <div id='createNewPlaylist'>
+                <p>Enter a name for your playlist</p>
+                <input type="text" id='namePlaylist'>
+                <div class="createNewPlaylist-options">
+                    <input class='button-newPlaylist' id='cancelPlaylist' type="button" value="Cancel">
+                    <input class='button-newPlaylist' id='createPlaylist' type="button" value="Create">
+                </div>
+            </div>
+            `;
+            document.querySelector('.midgroup').insertAdjacentHTML('beforeend',html)
+        },
+        removeWindowToCreateNewPlaylist(){
+            document.querySelector('#createNewPlaylist').remove();
+        },
         removeMessageSongNotAvailable(){
-            document.getElementById('songNotAvailable').remove()
+            document.getElementById('songNotAvailable').remove();
         },
         resetTrackPreview(){
             this.containerField().imagePreviewTrack.innerHTML = '';
@@ -339,22 +382,23 @@ const UIController_Main = (function() {
                 token : document.querySelector(DOMElements.hiddenToken).value
             }
         }
-
-
     }
 
 })();
 
+
+// Audio Controller
 const audioPlayer = (function(UICtrl) {
 
+    // Private methods
     const _playAudioHTML = (track_previuw_url) => {
-        if (track_previuw_url != 'null') {
+        if (track_previuw_url != 'null') {  // Check if the track has a preview
             const audio = document.getElementById('audio')
             audio.src = track_previuw_url;
             audio.play();
-        } else {
+        } else { // Show a message if the track not have a preview
             UICtrl.showSongMessageNotAvailable();
-            window.setTimeout(UICtrl.removeMessageSongNotAvailable, 1500)
+            window.setTimeout(UICtrl.removeMessageSongNotAvailable, 2500) // Remove message after 2.5 seconds
         }
     }
 
