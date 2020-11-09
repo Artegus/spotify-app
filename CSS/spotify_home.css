@@ -256,6 +256,8 @@ hr {
 	bottom: 260px;
 	padding: 0px;
 	overflow: auto;
+	scrollbar-color: rgba(102, 99, 99, 0.891) rgba(5, 5, 5, 0.156);
+    scrollbar-width: thin;
 }
 
 .menuview .preview {
@@ -298,6 +300,8 @@ hr {
 	padding: 20px;
 	overflow: auto;
 	color: #88898c;
+	scrollbar-color: rgba(102, 99, 99, 0.891) rgba(5, 5, 5, 0.156);
+    scrollbar-width: thin;
 }
 
 .mainview a {
