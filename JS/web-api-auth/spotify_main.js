@@ -97,7 +97,7 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
             const checkboxSelected = DOMcontainers.tracksPlaylist.querySelectorAll("input[type=checkbox]:checked")
             const tracksSelected = [...checkboxSelected].map((checkbox) => checkbox.track)
 
-            // Get selected option 
+            // Get selected option -- Add tracks to playlist selected (DOING)
             document.querySelector('#listOfPlaylist ul').addEventListener('click', (e) => {
                 const selectedElement = document.querySelector('a:focus')
                 console.log(selectedElement)
