@@ -4,6 +4,10 @@ class User {
         this._listOfPlaylists = [];
     }
 
+    get playlist() {
+        return this._listOfPlaylists;
+    }
+
     addNewPlaylist (playlist) {
         this._listOfPlaylists.push(playlist);
     }
