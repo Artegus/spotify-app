@@ -665,7 +665,8 @@ ul.albums li p, ul.playlists li p, ul.genres li p {
 	color: var(--color-text);
 	cursor: default;
 }
-#createNewPlaylist {
+
+.window-alert {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -700,4 +701,47 @@ ul.albums li p, ul.playlists li p, ul.genres li p {
 	border-radius: 10px;
 	width: 80px;
 	cursor: pointer;
+}
+.button-addToPlaylist {
+	margin-top: 22px;
+	background-color: var(--color-button);
+	color: var(--color-info);
+	position: absolute;
+	left:50%;
+	transform: translate(-50%,-50%);
+	text-align: center;
+	font-size: 8pt;
+	border: none;
+	padding: 5px;
+	border-radius: 10px;
+	width: 80px;
+	cursor: pointer;
+}
+#listOfPlaylist {
+	background-color: var(--color-song-not-available);
+	color: var(--color-info);
+	border-radius: 10px;
+	padding: 10px;
+	position: absolute;
+	left:50%;
+	top:50%;
+	transform: translate(-50%,-50%);
+}
+#listOfPlaylist ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+#listOfPlaylist li:hover {
+	background-color: #444;
+}
+#listOfPlaylist li{
+	padding: 0;
+	margin: 0;
+}
+#listOfPlaylist li a {
+	display: block;
+	width: 100%;
+	margin: 0;
+	padding: 0;
 }
