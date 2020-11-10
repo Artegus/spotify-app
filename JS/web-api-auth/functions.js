@@ -224,7 +224,8 @@ const UIController_Main = (function() {
         hiddenToken : '#hidden_token',
         createANewPlaylist : '#newPlaylist',
         buttonCreatePlaylist : 'createPlaylist',
-        buttonCancelPlaylist : 'cancelPlaylist'
+        buttonCancelPlaylist : 'cancelPlaylist',
+        buttonAddToPlaylist : 'addToPlaylist'
         // podría crear todo lo que va dentro del contenido de cada playlist desde su padre usado el id de content-main
         // Creando primero el header (playlist info), luego la infoextra (playlist más info), track preview y por último la tabla con las canciones.
     }
@@ -316,7 +317,7 @@ const UIController_Main = (function() {
             `;
             document.querySelector(DOMElements.extraInfoPlaylist).innerHTML = html;
         },
-        createNewUserPlaylist(name, user) {
+        createNewUserPlaylist(name, user) { // Crea na nueva playlist del usuario. EL nombre de la función puede confundir
             // Create a playlist object
             const playlist = new Playlist(name)
             // Create item list 
@@ -344,7 +345,7 @@ const UIController_Main = (function() {
         },
         showWindowToCreateNewPlaylist() {
             const html = `
-            <div id='createNewPlaylist'>
+            <div id='createNewPlaylist' class='window-alert'>
                 <p>Enter a name for your playlist</p>
                 <input type="text" id='namePlaylist'>
                 <div class="createNewPlaylist-options">
@@ -354,6 +355,37 @@ const UIController_Main = (function() {
             </div>
             `;
             document.querySelector('.midgroup').insertAdjacentHTML('beforeend',html)
+        },
+        showWindowToAddTracksToPlaylist(userPlaylists = []){
+
+            const html = `
+            <div id='listOfPlaylist'>
+                <p>Select one of your playlist</p>
+                <ul>
+
+                </ul>
+                <div class="createNewPlaylist-options">
+                    <input class='button-newPlaylist' id='cancelPlaylist' type="button" value="Cancel">
+                </div>
+            </div>
+            `;
+            // show window 
+            document.querySelector('.midgroup').insertAdjacentHTML('beforeend', html)
+            // Add playlist elements to unordered list
+            userPlaylists.forEach((playlist) => {
+                const namePlaylist = playlist.name
+                const listElement = document.createElement('li')
+                const link = document.createElement('a')
+                link.href=`#${namePlaylist}`
+                link.innerHTML = namePlaylist
+                link.playlist = playlist;
+                listElement.appendChild(link)
+                document.querySelector('#listOfPlaylist ul').insertAdjacentElement("beforeend", listElement)  // Nota, antes he usado outerHTML pero solo devuelve el fragmento html serializado.
+            })
+
+        },
+        removeWindowToAddTracksToPlaylist(){
+            document.querySelector('#listOfPlaylist').remove();
         },
         removeWindowToCreateNewPlaylist(){
             document.querySelector('#createNewPlaylist').remove();
@@ -371,7 +403,7 @@ const UIController_Main = (function() {
             this.containerField().headerPlaylist.innerHTML = '';
         },
         addButtonToAddTracksToPlaylist(){
-            const html = `<input type='button'value='Add to Playlist' id='addToPlaylist'>`
+            const html = `<input type='button'value='Add to Playlist' class='button-addToPlaylist' id='addToPlaylist'>`
             document.querySelector(DOMElements.tracksTableBody).insertAdjacentHTML('beforeend', html)
         },
         storeToken(token) {
