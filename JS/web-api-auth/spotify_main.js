@@ -6,6 +6,7 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
     const DOMcontainers = UICtrl.containerField();
     // Create a default user
     const defaultUser = new User();
+    
     const loadRecommendedPlaylist = async () => {
         // Get token
         const token = await APICtrl.getToken()
@@ -26,7 +27,7 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
         })
 
     }
-    // Create a tracks tbody, image of track and playlist info 
+    // Create a tbody with tracks and playlist info 
     DOMcontainers.recommendPlaylists.addEventListener('click', async (e) => {
         // Prevent reload page
         e.preventDefault()
@@ -38,7 +39,7 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
         const linkSelected  = DOMcontainers.recommendPlaylists.querySelector('a:focus')
         // Get stored token
         const token = UICtrl.getStoredToken().token;
-        // Get paylistReference
+        // Get pĺaylistReference
         const playlistReference = linkSelected.attributes[2].value
         // Get playlist
         const playlistSelected = await APICtrl.getPlaylist(token, playlistReference)
@@ -85,6 +86,36 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
         })
         // Add button to add tracks to playlist
         UICtrl.addButtonToAddTracksToPlaylist();
+        // event is added to show the window of adding songs to a playlist
+        document.getElementById('addToPlaylist').addEventListener('click', (e) => {
+            // Get user playlist
+            const userPlaylists = defaultUser.playlist;
+            // Show window
+            UICtrl.showWindowToAddTracksToPlaylist(userPlaylists);
+
+            // Get tracks selected 
+            const checkboxSelected = DOMcontainers.tracksPlaylist.querySelectorAll("input[type=checkbox]:checked")
+            const tracksSelected = [...checkboxSelected].map((checkbox) => checkbox.track)
+
+            // Get selected option 
+            document.querySelector('#listOfPlaylist ul').addEventListener('click', (e) => {
+                const selectedElement = document.querySelector('a:focus')
+                console.log(selectedElement)
+            })
+            /* document.querySelector('#listOfPlaylist li > a:').addEventListener('click', (e) => {
+                console.log(e);
+            }) */
+
+            // Cancel button
+            const buttonCancel = UICtrl.buttonField().buttonCancelPlaylist;
+            // event is added to remove the window has created
+            buttonCancel.addEventListener('click', (e) => {
+                UICtrl.removeWindowToAddTracksToPlaylist();
+            })
+
+        });
+
+
     })
 
     // Play song and display img of song
@@ -126,14 +157,16 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
         DOMbuttons.buttonCreatePlaylist.addEventListener('click', (e) => {
             // Get name of playlist
             const namePlaylist = document.getElementById('namePlaylist').value
-            // Create a new user playlist
-            UICtrl.createNewUserPlaylist(namePlaylist, defaultUser);
-            // Get playlist object
+            // Add new playlist to user
+            if (namePlaylist != '') {
+                UICtrl.createNewUserPlaylist(namePlaylist, defaultUser);
+            }
             console.log(defaultUser)
             UICtrl.removeWindowToCreateNewPlaylist();
         })
 
     })
+
     
     const playAudio = (trackSelected) => {
         // Get url of track  
