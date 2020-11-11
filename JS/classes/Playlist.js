@@ -1,25 +1,28 @@
 class Playlist {
     constructor (name) {
         this._name = name;
-        this._amountOftracks = this.calculateAmountOfTracks || 0;
-        this._listOfTracks = [] // Será un array con canciones
-        this._totalDuration = this.calculateDuration;
+        this._amountOftracks = 0;
+        this._listOfTracks = [];// Será un array con canciones
+        this._totalDuration = 0;
     }
     // Getter
-    get name () {
+    get name() { // get playlist name
         return this._name;
     }
     // Setter
-    set name (updatedName) {
+    set name(updatedName) { // Change name of playlist
         this._name = updatedName;
     }
 
-    set listOfTracks(listOfTracks) {
-        this._listOfTracks = listOfTracks;
+    set listOfTracks(listOfTracks) { // Add tracks
+        this._listOfTracks.push(...listOfTracks);
+        this._totalDuration = this.calculateDuration();
+        this._amountOftracks = this.calculateAmountOfTracks();
     }
-
+    
+    // Functions
     calculateDuration() {
-        return this._listOfTracks.reduce((accumulator, track) => accumulator + track.duration);
+            return this._listOfTracks.reduce((accumulator, {duration} = track) => accumulator + duration, 0) 
     }
 
     calculateAmountOfTracks() {
