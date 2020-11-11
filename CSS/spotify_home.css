@@ -704,18 +704,9 @@ ul.albums li p, ul.playlists li p, ul.genres li p {
 }
 .button-addToPlaylist {
 	margin-top: 22px;
-	background-color: var(--color-button);
-	color: var(--color-info);
 	position: absolute;
 	left:50%;
 	transform: translate(-50%,-50%);
-	text-align: center;
-	font-size: 8pt;
-	border: none;
-	padding: 5px;
-	border-radius: 10px;
-	width: 80px;
-	cursor: pointer;
 }
 #listOfPlaylist {
 	background-color: var(--color-song-not-available);
@@ -744,4 +735,27 @@ ul.albums li p, ul.playlists li p, ul.genres li p {
 	width: 100%;
 	margin: 0;
 	padding: 0;
+}
+.button-default {
+	background-color: var(--color-button);
+	color: var(--color-info);
+	text-align: center;
+	font-size: 8pt;
+	border: none;
+	padding: 5px;
+	border-radius: 10px;
+	width: 80px;
+	cursor: pointer;
+}
+.buttons-options-table{
+	padding-left: 210px;
+	margin-top: 10px;
+}
+.search-input {
+	border: 0;
+	padding: 2px 10px;
+	border-radius: 20px;
+	background-color: #ddd;
+	width: 30%;
+	outline: none;
 }
