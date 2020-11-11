@@ -422,7 +422,7 @@ const UIController_Main = (function() {
 // Audio Controller
 const audioPlayer = (function(UICtrl) {
 
-    // Private methods
+    // Private method
     const _playAudioHTML = (track_previuw_url) => {
         if (track_previuw_url != 'null') {  // Check if the track has a preview
             const audio = document.getElementById('audio')
