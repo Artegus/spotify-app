@@ -744,7 +744,7 @@ ul.albums li p, ul.playlists li p, ul.genres li p {
 	border: none;
 	padding: 5px;
 	border-radius: 10px;
-	width: 80px;
+	width: 90px;
 	cursor: pointer;
 }
 .buttons-options-table{
@@ -758,4 +758,50 @@ ul.albums li p, ul.playlists li p, ul.genres li p {
 	background-color: #ddd;
 	width: 30%;
 	outline: none;
+}
+.list-tracks {
+	margin: 0;
+	padding: 0;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	grid-row-gap: 3ch;
+	/*grid-template-rows: repeat(5, minmax(220px, 1fr));*/
+}
+.list-tracks div {
+	margin: 0;
+	padding: 0;
+	width: 200px;
+	height: 200px;
+	display: flex;
+	background-color: #22232677;
+	transition: 0.5s ease-out;
+	cursor: pointer;
+}
+
+.img-container {
+	display: flex;
+	border: none;
+	padding: 0;
+	margin: 0;
+	background-size: cover;	
+}
+
+.info-track-img {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	color: white;
+}
+.info-track-img p {
+	display : none;
+}
+
+.img-container:hover p {
+	display: block;
+}
+
+.list-tracks div:hover .info-track-img{
+	display: flex;
+	background-color: var(--color-background-album);
 }
