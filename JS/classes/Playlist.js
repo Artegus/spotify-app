@@ -4,6 +4,7 @@ class Playlist {
         this._amountOftracks = 0;
         this._listOfTracks = [];// Será un array con canciones
         this._totalDuration = 0;
+        this._owner = 'Default User'
     }
     // Getter
     get name() { // get playlist name
@@ -18,6 +19,10 @@ class Playlist {
         this._listOfTracks.push(...listOfTracks);
         this._totalDuration = this.calculateDuration();
         this._amountOftracks = this.calculateAmountOfTracks();
+    }
+
+    removeTrack() {
+
     }
     
     // Functions
