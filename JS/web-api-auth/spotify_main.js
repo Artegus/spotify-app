@@ -86,25 +86,29 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
         })
         // Add button to add tracks to playlist
         UICtrl.addButtonToAddTracksToPlaylist();
-        // event is added to show the window of adding songs to a playlist
+
+
+        // Event to show the window of adding songs to a playlist (button 'Add to Playlist')
         document.getElementById('addToPlaylist').addEventListener('click', (e) => {
-            // Get user playlist
+            // Get user playlists
             const userPlaylists = defaultUser.playlist;
-            // Show window
+            // Show window with user playlists
             UICtrl.showWindowToAddTracksToPlaylist(userPlaylists);
 
-            // Get tracks selected 
-            const checkboxSelected = DOMcontainers.tracksPlaylist.querySelectorAll("input[type=checkbox]:checked")
-            const tracksSelected = [...checkboxSelected].map((checkbox) => checkbox.track)
-
-            // Get selected option -- Add tracks to playlist selected (DOING)
+            // Get selected option -- Add tracks to playlist selected 
             document.querySelector('#listOfPlaylist ul').addEventListener('click', (e) => {
+                // Get tracks selected 
+                const checkboxSelected = DOMcontainers.tracksPlaylist.querySelectorAll("input[type=checkbox]:checked")
+                const tracksSelected = [...checkboxSelected].map((checkbox) => checkbox.track)
+                // Get selected playlist
                 const selectedElement = document.querySelector('a:focus')
-                console.log(selectedElement)
+                // Get playlist object
+                const playlistSelected = selectedElement.playlist
+                // Add tracks to playlist
+                playlistSelected.listOfTracks = tracksSelected;
+                // Close the window
+                UICtrl.removeWindowToAddTracksToPlaylist();
             })
-            /* document.querySelector('#listOfPlaylist li > a:').addEventListener('click', (e) => {
-                console.log(e);
-            }) */
 
             // Cancel button
             const buttonCancel = UICtrl.buttonField().buttonCancelPlaylist;
@@ -115,7 +119,6 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
 
         });
 
-
     })
 
     // Play song and display img of song
@@ -125,7 +128,7 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
         // Get song selected
         const trackSelected = DOMcontainers.tracksPlaylist.querySelector('button:focus')
 
-        if (trackSelected != null) { // Check if trackSelected != null
+        if (trackSelected != null) { // Check if trackSelected != null. Some songs 
             UICtrl.resetTrackPreview();
             playAudio(trackSelected)
             // Get trackEndPoint
@@ -167,14 +170,14 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
 
     })
 
-    
+    // Play audio 
     const playAudio = (trackSelected) => {
         // Get url of track  
         const track_preview_url = trackSelected.value
         // Reproduce the song
         AUDIOCtrl.playAudioHTML(track_preview_url)
     }
-
+    // Get url_preview
     const getSongUrl = (trackSelected) => {
         return trackSelected.dataset.song;
     }
