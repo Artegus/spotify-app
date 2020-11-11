@@ -13,7 +13,7 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
         // Store token
         UICtrl.storeToken(token);
         // Get playlists 'toplists'
-        const toplistPlaylists = await APICtrl.getCategoryPlaylists(token, 'toplists')
+        const toplistPlaylists = await APICtrl.getCategoryPlaylists(token, 'rock')
         // Add the elements to thhe interface 
         toplistPlaylists.forEach((playlist) => {
             // Get info for each playlist
@@ -27,6 +27,51 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
         })
 
     }
+    const mostrarCanciones = async (playlist) => {
+        // Get stored token 
+        const token = UICtrl.getStoredToken().token
+        // Get info playlist
+        const {
+            _amountOftracks : numberOfTracks,
+            _name : playlistName,
+            _listOfTracks : listOfUserTracks,
+            _totalDuration : totalDuration,
+            _owner : owner
+        } = playlist;
+        // Create header playlist 
+        UICtrl.createUserPlaylistInfo(playlistName,'Standard description', '../img/playlist_default.png', 1, totalDuration)
+        UICtrl.createPlaylistExtraInfo(owner, numberOfTracks);
+
+        // Display the tracks in two different ways
+        var randomNumber = 1//Math.floor(Math.random() * 2 + 1); // 1 or 2
+        var posicionFila = 0; // Necessary to place the input checkbox
+        if(randomNumber == 1) {
+            listOfUserTracks.forEach( async (track) => {
+                // Get info
+                const {
+                    _album : album,
+                    _artist : artist,
+                    _dateAdded : dateAdded,
+                    _duration : duration,
+                    _name : trackName,
+                    _trackEndPoint : trackEndPoint,
+                    _urlPreview : urlPreview,
+                } = track;
+                // Get extra info 
+                const extraInfoTrack = await APICtrl.getTrack(token, trackEndPoint);
+                const {
+                    artists : [{external_urls : {spotify : spotifyArtist}}],
+                    external_urls : { spotify : spotifySong}
+                } = extraInfoTrack;
+                posicionFila++;
+                // Add track to tbody
+                UICtrl.createTrack(trackName, artist, duration, album, dateAdded, urlPreview, trackEndPoint, spotifySong, spotifyArtist, posicionFila);
+            })
+        } else {
+            // Second way
+        }
+    }
+
     // Create a tbody with tracks and playlist info 
     DOMcontainers.recommendPlaylists.addEventListener('click', async (e) => {
         // Prevent reload page
@@ -95,7 +140,7 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
             // Show window with user playlists
             UICtrl.showWindowToAddTracksToPlaylist(userPlaylists);
 
-            // Get selected option -- Add tracks to playlist selected 
+            // Get the selected playlist and add the songs to it
             document.querySelector('#listOfPlaylist ul').addEventListener('click', (e) => {
                 // Get tracks selected 
                 const checkboxSelected = DOMcontainers.tracksPlaylist.querySelectorAll("input[type=checkbox]:checked")
@@ -120,6 +165,68 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
         });
 
     })
+
+    DOMcontainers.userPlaylists.addEventListener('click', (e) => {
+        // Prevent reload page
+        e.preventDefault()
+        // Clear playlist info
+        UICtrl.resetPlaylistInfo()
+        // Clear tracks
+        UICtrl.resetTracks()
+        // Get link selected
+        const linkSelected  = DOMcontainers.userPlaylists.querySelector('a:focus')
+        // Get playlist
+        const playlist = linkSelected.playlist;
+
+        mostrarCanciones(playlist);
+    })
+
+    // Create tbody and info of playlist user
+    /* DOMcontainers.userPlaylists.addEventListener('click', (e) => {
+        // Prevent reload page
+        e.preventDefault()
+        // Clear playlist info
+        UICtrl.resetPlaylistInfo()
+        // Clear tracks
+        UICtrl.resetTracks()
+        // Get link selected
+        const linkSelected  = DOMcontainers.userPlaylists.querySelector('a:focus')
+        // Get stored token
+        const token = UICtrl.getStoredToken().token;
+        // Get playlist
+        const playlist = linkSelected.playlist;
+        // Get info playlist
+        const {
+            _amountOftracks : numberOfTracks,
+            _name : playlistName,
+            _listOfTracks : listOfUserTracks,
+            _totalDuration : totalDuration,
+            _owner : owner
+        } = playlist;
+        // Create header playlist 
+        UICtrl.createUserPlaylistInfo(playlistName,'Standard description', '../img/playlist_default.png', 1, totalDuration)
+        UICtrl.createPlaylistExtraInfo(owner, numberOfTracks);
+
+        // Display the tracks in two different ways
+        var randomNumber = 1//Math.floor(Math.random() * 2 + 1); // 1 or 2
+        var posicionFila = 0;
+        if(randomNumber == 1) {
+            listOfUserTracks.forEach((track) => {
+                const {
+                    _album : album,
+                    _artist : artist,
+                    _dateAdded : dateAdded,
+                    _duration : duration,
+                    _name : trackName,
+                    _trackEndPoint : trackEndPoint,
+                    _urlPreview : urlPreview
+                } = track;
+                posicionFila++;
+                // Add track to tbody
+                UICtrl.createTrack(trackName, artist, duration, album, dateAdded, urlPreview, trackEndPoint, '', '', posicionFila);
+            })
+        }
+    }) */
 
     // Play song and display img of song
     DOMcontainers.tracksPlaylist.addEventListener('click', async (e) => {
