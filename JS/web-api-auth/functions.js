@@ -230,6 +230,12 @@ const UIController_Main = (function() {
         // Creando primero el header (playlist info), luego la infoextra (playlist más info), track preview y por último la tabla con las canciones.
     }
 
+    const formatDurationOfPlaylist = (seconds) => {
+        return new Date(seconds * 1000).toISOString().substr(11,8);
+    }
+    const formatDurationOfTrack = (seconds) => {
+        return new Date(seconds * 1000).toISOString().substr(14,5);
+    }
 
     return {
         containerField() {
@@ -240,7 +246,8 @@ const UIController_Main = (function() {
                 contentMainPlaylist : document.querySelector(DOMElements.contentMainPage), // Este no lo uso.
                 extraInfoPlaylist : document.querySelector(DOMElements.extraInfoPlaylist),
                 recommendPlaylists : document.querySelector(DOMElements.recommendPlaylists),
-                buttonNewPlaylist : document.querySelector(DOMElements.createANewPlaylist)
+                buttonNewPlaylist : document.querySelector(DOMElements.createANewPlaylist),
+                userPlaylists : document.querySelector(DOMElements.userPlaylists)
             }
         },
         buttonField(){
@@ -253,12 +260,13 @@ const UIController_Main = (function() {
             const html = `<li><a href='#' helper=${tracksEndPoint} value=${api_url_playlist}>${name}</a></li>`;
             document.querySelector(DOMElements.recommendPlaylists).insertAdjacentHTML('beforeend', html)
         },
-        createTrack(name, artist, duration, album, date_added, url_preview, trackEndPoint, urlSpotifySong, urlSpotifyArtist, posicionFila) {
-            const track = new Track(name, artist, album, duration);
+        createTrack(name, artist, duration, album, dateAdded, url_preview, trackEndPoint, urlSpotifySong, urlSpotifyArtist, posicionFila) {
+            const track = new Track(name, artist, album, duration, dateAdded, url_preview, trackEndPoint);
             const inputCheckbox = document.createElement('input'); // Creación del checkbox para poder introducir en el el objecto track. 
             inputCheckbox.type = 'checkbox'
             inputCheckbox.track = track;
-            
+            // Duration in min:ss
+            const formatedDuration = formatDurationOfTrack(duration)
             const html = `
             <tr class="ng-scope">
                 <td>
@@ -270,11 +278,11 @@ const UIController_Main = (function() {
                 <td>
                     <a class="ng-binding" target='_blank' href=${urlSpotifyArtist}>${artist}</a>
                 </td>
-                <td class="nowrap ng-binding">${duration}</td>
+                <td class="nowrap ng-binding">${formatedDuration}</td>
                 <td>
                     <a class="ng-binding">${album}</a>
                 </td>
-                <td class="nowrap ng-binding">${date_added}</td>
+                <td class="nowrap ng-binding">${dateAdded}</td>
             </tr>`;
             // Add to table
             document.querySelector(DOMElements.tracksTableBody).insertAdjacentHTML('beforeend', html)
@@ -316,6 +324,32 @@ const UIController_Main = (function() {
             <br class="ng-scope">
             `;
             document.querySelector(DOMElements.extraInfoPlaylist).innerHTML = html;
+        },
+        createUserPlaylistInfo(name, description, imageUrl, followers, totalDuration){ // USER PLAYLIST PLEASE ADD BUTTONS
+            const duration = formatDurationOfPlaylist(totalDuration)
+            const html = `
+            <div class="ng-isolate-scope ng-pristine ng-valid">
+                <div class="cover"
+                    style="background-image:url(${imageUrl})">
+                </div>
+            </div>
+            <h4 class="ng-hide">PRIVATE PLAYLIST</h4>
+            <h4 class="">PLAYLIST</h4>
+            <h1 class="ng-binding">${name}</h1>
+            <p class="ng-binding">${description}</p>
+            <div class="follower-count ng-binding">${followers} followers · Duration ${duration}</div>
+            <div class='buttons-options-table'>
+                <input class='search-input' id='search' type='text' placeholder='Search track...'>
+                <input id='searchTrack' class='button-default' type='button' value='Buscar'>
+            </div>
+            <div class='buttons-options-table'>
+                <input id='orderByTrackNameASC' class='button-default' type='button' value='Ordenadar por nombre de canción ASC'>
+                <input id='orderByTrackNameDES' class='button-default' type='button' value='Ordenar por nombre de canción DES'>
+                <input id='' class='button-default' type='button' value='helpme'>
+                <input id='' class='button-default' type='button' value='helpme'>
+            </div>
+            `;
+            document.querySelector(DOMElements.headerPlaylist).innerHTML = html;
         },
         createNewUserPlaylist(name, user) { // Crea na nueva playlist del usuario. EL nombre de la función puede confundir
             // Create a playlist object
@@ -403,7 +437,7 @@ const UIController_Main = (function() {
             this.containerField().headerPlaylist.innerHTML = '';
         },
         addButtonToAddTracksToPlaylist(){
-            const html = `<input type='button'value='Add to Playlist' class='button-addToPlaylist' id='addToPlaylist'>`
+            const html = `<input type='button'value='Add to Playlist' class='button-addToPlaylist button-default' id='addToPlaylist'>`
             document.querySelector(DOMElements.tracksTableBody).insertAdjacentHTML('beforeend', html)
         },
         storeToken(token) {
