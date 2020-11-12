@@ -14,7 +14,7 @@ body {
 	padding: 0;
 	border: 0;
 	font-family: 'Open Sans', sans-serif;
-	font-size: 8pt;
+	font-size: 8.5pt;
 	font-weight: 300;
 	overflow: hidden;
 }
@@ -636,8 +636,8 @@ ul.albums li p, ul.playlists li p, ul.genres li p {
 	height: 220px;
 }
 .button-play {
-	height: 30px;
-	width: 30px;
+	height: 27px;
+	width: 27px;
 	margin-left: 50px;
 	cursor: pointer;
 	border: none;
