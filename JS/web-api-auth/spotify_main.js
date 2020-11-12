@@ -30,7 +30,7 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
     const mostrarCanciones = async (playlist) => {
         // Get stored token 
         const token = UICtrl.getStoredToken().token
-        // Get info playlist
+        /* // Get info playlist
         const {
             _amountOftracks : numberOfTracks,
             _name : playlistName,
@@ -40,8 +40,8 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
         } = playlist;
         // Create header playlist 
         UICtrl.createUserPlaylistInfo(playlistName,'Standard description', '../img/playlist_default.png', 1, totalDuration)
-        UICtrl.createPlaylistExtraInfo(owner, numberOfTracks);
-
+        UICtrl.createPlaylistExtraInfo(owner, numberOfTracks); */
+        const listOfUserTracks = playlist._listOfTracks;
         // Display the tracks in two different ways
         var randomNumber = 1//Math.floor(Math.random() * 2 + 1); // 1 or 2
         var posicionFila = 0; // Necessary to place the input checkbox
@@ -178,8 +178,51 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
         // Get playlist
         const playlist = linkSelected.playlist;
 
+        // Get info playlist
+        const {
+            _amountOftracks : numberOfTracks,
+            _name : playlistName,
+            _listOfTracks : listOfUserTracks,
+            _totalDuration : totalDuration,
+            _owner : owner
+        } = playlist;
+        // Create header playlist 
+        UICtrl.createUserPlaylistInfo(playlistName,'Standard description', '../img/playlist_default.png', 1, totalDuration)
+        UICtrl.createPlaylistExtraInfo(owner, numberOfTracks);
+
         mostrarCanciones(playlist);
+
+        const DOMbuttons = UICtrl.buttonFieldControls();
+        
+        DOMbuttons.orderByNameASC.addEventListener('click', (e) => {
+            //playlist.orderByNameASC();
+            playlist.orderBy('name', 0);
+            UICtrl.resetTracks();
+            mostrarCanciones(playlist)
+        })
+
+        DOMbuttons.orderByNameDES.addEventListener('click', (e) => {
+            //playlist.orderByNameDes()
+            playlist.orderBy('name', 1);
+            UICtrl.resetTracks();
+            mostrarCanciones(playlist)
+        })
+        DOMbuttons.orderByDurationASC.addEventListener('click', (e) => {
+            //playlist.orderByDurationASC();
+            playlist.orderBy('duration', 0);
+            UICtrl.resetTracks();
+            mostrarCanciones(playlist)
+        })
+        DOMbuttons.orderByDurationDES.addEventListener('click', (e) => {
+            //playlist.orderByDurationDES();
+            playlist.orderBy('duration', 1)
+            UICtrl.resetTracks();
+            mostrarCanciones(playlist)
+        })
+
+
     })
+
 
     // Create tbody and info of playlist user
     /* DOMcontainers.userPlaylists.addEventListener('click', (e) => {
@@ -276,6 +319,8 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
         })
 
     })
+
+
 
     // Play audio 
     const playAudio = (trackSelected) => {
