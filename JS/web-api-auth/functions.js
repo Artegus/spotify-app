@@ -229,6 +229,14 @@ const UIController_Main = (function() {
         // podría crear todo lo que va dentro del contenido de cada playlist desde su padre usado el id de content-main
         // Creando primero el header (playlist info), luego la infoextra (playlist más info), track preview y por último la tabla con las canciones.
     }
+    const DOMbuttons =  {
+        nameASC : '#orderByTrackNameASC',
+        nameDES : '#orderByTrackNameDES',
+        search : '#searchTrack',
+        durationASC : '#orderByDurationASC',
+        durationDES : '#orderByDurationDES',
+        deleteSelected : '#deleteSelected'
+    }
 
     const formatDurationOfPlaylist = (seconds) => {
         return new Date(seconds * 1000).toISOString().substr(11,8);
@@ -254,6 +262,16 @@ const UIController_Main = (function() {
             return {
                 buttonCreatePlaylist : document.getElementById(DOMElements.buttonCreatePlaylist),
                 buttonCancelPlaylist : document.getElementById(DOMElements.buttonCancelPlaylist)
+            }
+        },
+        buttonFieldControls() {
+            return {
+                orderByNameASC : document.querySelector(DOMbuttons.nameASC),
+                orderByNameDES : document.querySelector(DOMbuttons.nameDES),
+                searchTrack : document.querySelector(DOMbuttons.search),
+                orderByDurationASC : document.querySelector(DOMbuttons.durationASC),
+                orderByDurationDES : document.querySelector(DOMbuttons.durationDES),
+                deleteTracks : document.querySelector(DOMbuttons.deleteSelected)
             }
         },
         createPlaylist(name, api_url_playlist, tracksEndPoint){
@@ -343,10 +361,11 @@ const UIController_Main = (function() {
                 <input id='searchTrack' class='button-default' type='button' value='Buscar'>
             </div>
             <div class='buttons-options-table'>
-                <input id='orderByTrackNameASC' class='button-default' type='button' value='Ordenadar por nombre de canción ASC'>
-                <input id='orderByTrackNameDES' class='button-default' type='button' value='Ordenar por nombre de canción DES'>
-                <input id='' class='button-default' type='button' value='helpme'>
-                <input id='' class='button-default' type='button' value='helpme'>
+                <input id='orderByTrackNameASC' class='button-default' type='button' value='Name Track ASC'>
+                <input id='orderByTrackNameDES' class='button-default' type='button' value='Name Track DES'>
+                <input id='orderByDurationASC' class='button-default' type='button' value='Duration ASC'>
+                <input id='orderByDurationDES' class='button-default' type='button' value='Duration DES'>
+                <input id='deleteSelected' class='button-default' type='button' value='Delete selected'>
             </div>
             `;
             document.querySelector(DOMElements.headerPlaylist).innerHTML = html;
