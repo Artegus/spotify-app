@@ -7,7 +7,7 @@ buttonRedirect.addEventListener('click', function() {
 });
 
 
-// Function to control both the API and the user interface. In this case 
+// Function to control both the API and the user interface.
 const APPController = (function(APICtrl, UICtrl) {
 
     const loadImages = async () => { // Function to get and display all data.
@@ -22,7 +22,7 @@ const APPController = (function(APICtrl, UICtrl) {
 
         var number = 1; // This number is needed to assign a different class to each component of the grid
         releasesAlbums.forEach((album) => {
-            // Collect the information i need
+            // Collect the information that i need
 
             const {
                 name : albumName,
@@ -63,7 +63,6 @@ const APPController = (function(APICtrl, UICtrl) {
 
     return {
         init() {
-            console.log(`loading images`);
             loadImages();
             console.log('ok :)')
         }
@@ -74,9 +73,3 @@ const APPController = (function(APICtrl, UICtrl) {
 
 
 APPController.init();
-
-
-
-
-
-//displayImages.init();
