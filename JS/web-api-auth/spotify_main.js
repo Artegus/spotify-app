@@ -1,6 +1,7 @@
 import {APIcontroller, UIController_Main, audioPlayer} from './functions.js';
+import {LocaleStorageController} from '../data/local_storage.js';
 
-const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
+const APPController = (function(APICtrl, UICtrl, AUDIOCtrl, LocalStorageCtrl){
 
     // Get containers field
     const DOMcontainers = UICtrl.containerField();
@@ -324,6 +325,6 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
         }
     }
 
-})(APIcontroller, UIController_Main, audioPlayer);
+})(APIcontroller, UIController_Main, audioPlayer, LocaleStorageController);
 
 APPController.init();
