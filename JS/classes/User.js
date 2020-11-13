@@ -4,14 +4,14 @@ class User {
         this._listOfPlaylists = [];
     }
 
-    get playlist() {
+    get playlists() {
         return this._listOfPlaylists;
     }
 
     addNewPlaylist (playlist) {
         this._listOfPlaylists.push(playlist);
     }
-    deletePlaylist (playlistId) {
+    deletePlaylist (name) {
         
     }
 
