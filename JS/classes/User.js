@@ -11,8 +11,8 @@ class User {
     addNewPlaylist (playlist) {
         this._listOfPlaylists.push(playlist);
     }
-    deletePlaylist (name) {
+    /* deletePlaylist (name) { Working...!
         
-    }
+    } */
 
 }
