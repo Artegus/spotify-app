@@ -22,7 +22,7 @@ class Playlist {
     }
 
     removeTracks(tracksTodelete = []) {
-        //this._listOfTracks = this._listOfTracks.filter((track) => !tracksTodelete.includes(track.name)); If the song is duplicated, it will remove all these
+        //this._listOfTracks = this._listOfTracks.filter((track) => !tracksTodelete.includes(track.name)); If a song is duplicated, it will remove all these
         // Delete tracks
         tracksTodelete.forEach((trackToDelete) => {
             var positionTrack = this._listOfTracks.findIndex((track) => track.name === trackToDelete)
@@ -51,7 +51,7 @@ class Playlist {
 
     /**
      * 
-     * @param {string} property 
+     * @param {string} property set property to compare ( name | duration | album | artist)
      * @param {number} typeOfOrder 0 for ascending order and 1 for descending order 
      */
     orderBy (property, typeOfOrder) {
