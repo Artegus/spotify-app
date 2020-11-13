@@ -13,7 +13,7 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
         // Store token
         UICtrl.storeToken(token);
         // Get playlists 'toplists'
-        const toplistPlaylists = await APICtrl.getCategoryPlaylists(token, 'rock')
+        const toplistPlaylists = await APICtrl.getCategoryPlaylists(token, 'toplists')
         // Add the elements to thhe interface 
         toplistPlaylists.forEach((playlist) => {
             // Get info for each playlist
@@ -28,25 +28,17 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
 
     }
     const mostrarCanciones = async (playlist) => {
-        // Get stored token 
+        // Clear the tracks section
+        UICtrl.resetTracks();
+        // Get stored token
         const token = UICtrl.getStoredToken().token
-        /* // Get info playlist
-        const {
-            _amountOftracks : numberOfTracks,
-            _name : playlistName,
-            _listOfTracks : listOfUserTracks,
-            _totalDuration : totalDuration,
-            _owner : owner
-        } = playlist;
-        // Create header playlist 
-        UICtrl.createUserPlaylistInfo(playlistName,'Standard description', '../img/playlist_default.png', 1, totalDuration)
-        UICtrl.createPlaylistExtraInfo(owner, numberOfTracks); */
-        const listOfUserTracks = playlist._listOfTracks;
+        // Get tracks 
+        //const listOfUserTracks = playlist._listOfTracks;
         // Display the tracks in two different ways
         var randomNumber = 1//Math.floor(Math.random() * 2 + 1); // 1 or 2
         var posicionFila = 0; // Necessary to place the input checkbox
         if(randomNumber == 1) {
-            listOfUserTracks.forEach( async (track) => {
+            playlist.forEach( async (track) => {
                 // Get info
                 const {
                     _album : album,
@@ -165,7 +157,7 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
         });
 
     })
-
+    // Create info of user Playlist. Functions 
     DOMcontainers.userPlaylists.addEventListener('click', (e) => {
         // Prevent reload page
         e.preventDefault()
@@ -190,34 +182,62 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
         UICtrl.createUserPlaylistInfo(playlistName,'Standard description', '../img/playlist_default.png', 1, totalDuration)
         UICtrl.createPlaylistExtraInfo(owner, numberOfTracks);
 
-        mostrarCanciones(playlist);
+        mostrarCanciones(listOfUserTracks);
 
         const DOMbuttons = UICtrl.buttonFieldControls();
         
         DOMbuttons.orderByNameASC.addEventListener('click', (e) => {
-            //playlist.orderByNameASC();
-            playlist.orderBy('name', 0);
-            UICtrl.resetTracks();
-            mostrarCanciones(playlist)
+            playlist.orderBy('name', 0)
+            mostrarCanciones(listOfUserTracks)
         })
 
         DOMbuttons.orderByNameDES.addEventListener('click', (e) => {
-            //playlist.orderByNameDes()
             playlist.orderBy('name', 1);
-            UICtrl.resetTracks();
-            mostrarCanciones(playlist)
+            mostrarCanciones(listOfUserTracks)
         })
         DOMbuttons.orderByDurationASC.addEventListener('click', (e) => {
-            //playlist.orderByDurationASC();
             playlist.orderBy('duration', 0);
-            UICtrl.resetTracks();
-            mostrarCanciones(playlist)
+            mostrarCanciones(listOfUserTracks)
         })
         DOMbuttons.orderByDurationDES.addEventListener('click', (e) => {
-            //playlist.orderByDurationDES();
             playlist.orderBy('duration', 1)
-            UICtrl.resetTracks();
-            mostrarCanciones(playlist)
+            mostrarCanciones(listOfUserTracks)
+        })
+        DOMbuttons.orderByAlbumASC.addEventListener('click', (e) => {
+            playlist.orderBy('album', 0)
+            mostrarCanciones(listOfUserTracks);
+        })
+        DOMbuttons.orderByAlbumDES.addEventListener('click', (e) => {
+            playlist.orderBy('album', 1)
+            mostrarCanciones(listOfUserTracks);
+        })
+        DOMbuttons.orderByArtistASC.addEventListener('click', (e) => {
+            playlist.orderBy('artist', 0)
+            mostrarCanciones(listOfUserTracks)
+        })
+        DOMbuttons.orderByArtistDES.addEventListener('click', (e) => {
+            playlist.orderBy('artist', 1)
+            mostrarCanciones(listOfUserTracks)
+        })
+        DOMbuttons.searchTrack.addEventListener('click', (e) => {
+            const trackToSearch = document.getElementById('search').value 
+
+            if(trackToSearch.length !== 0 || trackToSearch !== '') {
+                const trackFound = playlist.searchTrack(trackToSearch);
+                mostrarCanciones(trackFound);
+            }
+        })
+        DOMbuttons.deleteTracks.addEventListener('click', (e) => {
+            // Get checkbox selected
+            const checkboxSelected = DOMcontainers.tracksPlaylist.querySelectorAll("input[type=checkbox]:checked")
+            if (checkboxSelected != 0) {
+                // Get name tracks PRUEBA CON NOMBRE
+                const tracks = [...checkboxSelected].map((checkbox) => checkbox.track.name)
+                // Remove tracks selected
+                playlist.removeTracks(tracks);
+                // Refresh tracks
+                mostrarCanciones(listOfUserTracks);
+            }
         })
 
 
