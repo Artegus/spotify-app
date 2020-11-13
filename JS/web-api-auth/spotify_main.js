@@ -40,13 +40,27 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl, LocalStorageCtrl){
                 // Get info of playlist 
                 const {
                     _amountOftracks : amountOftracks,
-                    _listOfTracks : listOfTracks,
+                    _listOfTracks : listOfTracksStored,
                     _name : namePlaylist,
                     _owner : ownerPlaylist,
                     _totalDuration : totalDuration
                 } = playlist 
+                // Convert all tracks to object Track.
+                const listOftracks = listOfTracksStored.map((track) => {
+                    const {
+                        _name : name,
+                        _album : album,
+                        _artist : artist,
+                        _duration : duration,
+                        _dateAdded : dateAdded,
+                        _urlPreview : urlPreview,
+                        _trackEndPoint : trackEndPoint
+                    } = track
+                    
+                    return new Track(name, artist, album, duration, dateAdded, urlPreview, trackEndPoint)
+                })
 
-                UICtrl.createNewUserPlaylist(namePlaylist, defaultUser, 1, playlist);
+                UICtrl.createNewUserPlaylist(namePlaylist, defaultUser, 1, listOftracks, totalDuration);
             })
         }
     }
@@ -156,7 +170,10 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl, LocalStorageCtrl){
             // Fixes an error if the window to create a playlist and the window to add songs are open at the same time
             if (document.getElementById('createNewPlaylist')) {
                 UICtrl.removeWindowToCreateNewPlaylist()
-            }
+            } else if (document.getElementById('listOfPlaylist')) {
+                // Fixes an error if the window is opened several times
+                UICtrl.removeWindowToAddTracksToPlaylist();
+            } 
             // Show window with user playlists
             UICtrl.showWindowToAddTracksToPlaylist(userPlaylists);
 
@@ -306,6 +323,9 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl, LocalStorageCtrl){
         // Fixes an error if the window to create a playlist and the window to add songs are open at the same time
         if (document.getElementById('listOfPlaylist')) {
             UICtrl.removeWindowToAddTracksToPlaylist();
+        } else if (document.getElementById('createNewPlaylist')) {
+            // Fixes an error if the window is opened serveral times.
+            UICtrl.removeWindowToCreateNewPlaylist();
         }
 
         UICtrl.showWindowToCreateNewPlaylist();
