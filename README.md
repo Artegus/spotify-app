@@ -6,4 +6,4 @@ This repository is a simple project to test the spotify API.
 - Create playlist that will be saved in the local storage of your browser.
 - You can sort, search and delete the songs from your playlists.
 
-Try **[spotify-clone]()**
+Try **[spotify-clone](https://spotify-clone-pl.web.app/)**
