@@ -235,6 +235,10 @@ const UIController_Main = (function() {
         search : '#searchTrack',
         durationASC : '#orderByDurationASC',
         durationDES : '#orderByDurationDES',
+        albumASC : '#orderByAlbumASC',
+        albumDES : '#orderByAlbumDES',
+        artistASC : '#orderByArtistASC',
+        artistDES : '#orderByArtistDES',
         deleteSelected : '#deleteSelected'
     }
 
@@ -271,6 +275,10 @@ const UIController_Main = (function() {
                 searchTrack : document.querySelector(DOMbuttons.search),
                 orderByDurationASC : document.querySelector(DOMbuttons.durationASC),
                 orderByDurationDES : document.querySelector(DOMbuttons.durationDES),
+                orderByAlbumASC : document.querySelector(DOMbuttons.albumASC),
+                orderByAlbumDES : document.querySelector(DOMbuttons.albumDES),
+                orderByArtistASC : document.querySelector(DOMbuttons.artistASC),
+                orderByArtistDES : document.querySelector(DOMbuttons.artistDES),
                 deleteTracks : document.querySelector(DOMbuttons.deleteSelected)
             }
         },
@@ -365,6 +373,10 @@ const UIController_Main = (function() {
                 <input id='orderByTrackNameDES' class='button-default' type='button' value='Name Track DES'>
                 <input id='orderByDurationASC' class='button-default' type='button' value='Duration ASC'>
                 <input id='orderByDurationDES' class='button-default' type='button' value='Duration DES'>
+                <input id='orderByAlbumASC' class='button-default' type='button' value='Album ASC'>
+                <input id='orderByAlbumDES' class='button-default' type='button' value='Album DES'>
+                <input id='orderByArtistASC' class='button-default' type='button' value='Artist ASC'>
+                <input id='orderByArtistDES' class='button-default' type='button' value='Artist DES'>
                 <input id='deleteSelected' class='button-default' type='button' value='Delete selected'>
             </div>
             `;
