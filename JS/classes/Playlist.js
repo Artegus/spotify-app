@@ -11,7 +11,7 @@ class Playlist {
         return this._name;
     }
     // Setter
-    set name(updatedName) { // Change name of playlist
+    set name(updatedName) {
         this._name = updatedName;
     }
 
@@ -44,7 +44,7 @@ class Playlist {
         return this._listOfTracks.length;
     }
 
-    searchTrack (trackName) { // Solo encuentra canciones con el nombre exacto, incluye espacios
+    searchTrack (trackName) { // Solo encuentra canciones con el nombre exacto.
         const trackFound = this._listOfTracks.filter((track) => track.name == trackName)
         return trackFound
     }
