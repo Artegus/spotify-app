@@ -226,7 +226,7 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
             mostrarCanciones(listOfUserTracks)
         })
         DOMbuttons.searchTrack.addEventListener('click', (e) => {
-            const trackToSearch = document.getElementById('search').value 
+            const trackToSearch = document.getElementById('search').value.toLocaleUpperCase()
 
             if(trackToSearch.length !== 0 || trackToSearch !== '') {
                 const trackFound = playlist.searchTrack(trackToSearch);
