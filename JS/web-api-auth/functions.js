@@ -282,10 +282,11 @@ const UIController_Main = (function() {
                 deleteTracks : document.querySelector(DOMbuttons.deleteSelected)
             }
         },
-        createPlaylist(name, api_url_playlist, tracksEndPoint){ // list element 
+        createPlaylist(name, api_url_playlist, tracksEndPoint){ // Display recommend playlists 
             const html = `<li><a href='#' helper=${tracksEndPoint} value=${api_url_playlist}>${name}</a></li>`;
             document.querySelector(DOMElements.recommendPlaylists).insertAdjacentHTML('beforeend', html)
         },
+        // Create track object and display tracks in table
         createTrack(name, artist, duration, album, dateAdded, url_preview, trackEndPoint, urlSpotifySong, urlSpotifyArtist, posicionFila) {
             const track = new Track(name, artist, album, duration, dateAdded, url_preview, trackEndPoint);
             const inputCheckbox = document.createElement('input'); // Creación del checkbox para poder introducir en el el objecto track. 
@@ -382,16 +383,16 @@ const UIController_Main = (function() {
             `;
             document.querySelector(DOMElements.headerPlaylist).innerHTML = html;
         },
-        // REPAIR THIS OR CREATE A NEW FUNCTION
         /**
          * 
          * @param {string} name name of Playlist
          * @param {User} user default User
          * @param {number} status  1 for created or 0 for new
+         * @param {array} listOfTracks array of track objects
+         * @param {number} totalDuration total duration of playlist
          */
         createNewUserPlaylist(name, user, status, listOfTracks = [], totalDuration = 0) { // Crea una nueva playlist del usuario. EL nombre de la función puede confundir
-            // A la función de arriba cambiar createdPlaylist por listOfTrack y añadir totalDuration 
-            if (status == 1) { // Playlists from localStorage
+            if (status == 1) { // Playlist from localStorage
                 // Create a new object of playlist from the stored
                 const playlist = new Playlist(name, listOfTracks, totalDuration)
                 // Create item list 
@@ -405,7 +406,7 @@ const UIController_Main = (function() {
                 itemList_playlist.appendChild(a_playlist)
                 // Add to playlists user
                 user.addNewPlaylist(playlist)
-                // Add to UI 
+                // Add to playlists user 
                 document.querySelector(DOMElements.userPlaylists).insertAdjacentElement('beforeend', itemList_playlist)
             } else { // If the playlist is new
                 // Create a playlist object
@@ -432,7 +433,6 @@ const UIController_Main = (function() {
             </div>
             `;
             document.querySelector('.midgroup').insertAdjacentHTML('beforeend', html)
-
         },
         showWindowToCreateNewPlaylist() {
             const html = `
