@@ -97,7 +97,7 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
         // Get tracks of playlist
         const tracks = await APICtrl.getTracks(token, tracksEndPoint) 
         // Posición checkbox
-        var posicionFila = 0; // Apañado para ir poniendo el chekcbox en cada una de las filas
+        var posicionFila = 0; // Apañado para ir poniendo el checkbox en cada una de las filas
         // Add track to tbody
         tracks.forEach((track) => {
             
@@ -118,6 +118,7 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
             } = track
             // Iterate position of checkbox.
             posicionFila += 1;
+            // Display track in the table
             UICtrl.createTrack(nameTrack, artist, Math.floor(duration * 0.001), nameAlbum, date, url_song, trackEndPoint, urlSpotifySong, urlSpotifyArtist, posicionFila)
         })
         // Add button to add tracks to playlist
@@ -128,6 +129,10 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
         document.getElementById('addToPlaylist').addEventListener('click', (e) => {
             // Get user playlists
             const userPlaylists = defaultUser.playlist;
+            // Fixes an error if the window to create a playlist and the window to add songs are open at the same time
+            if (document.getElementById('createNewPlaylist')) {
+                UICtrl.removeWindowToCreateNewPlaylist()
+            }
             // Show window with user playlists
             UICtrl.showWindowToAddTracksToPlaylist(userPlaylists);
 
@@ -155,7 +160,7 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
         });
     })
 
-    // Create info of user Playlist. Functions to order, search and remove tracks
+    // Create info of user Playlist. Events to the buttons to order, search and remove tracks
     DOMcontainers.userPlaylists.addEventListener('click', (e) => {
         // Prevent reload page
         e.preventDefault()
@@ -241,7 +246,7 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
 
     })
 
-    // Play song and display img of song
+    // Play and display img of song
     DOMcontainers.tracksPlaylist.addEventListener('click', async (e) => {
         // Get stored token
         const token = UICtrl.getStoredToken().token;
@@ -268,8 +273,13 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
         }
     })
 
-    // Show windows to create a new playlist
+    // Show window to create a new playlist
     DOMcontainers.buttonNewPlaylist.addEventListener('click', (e) => {
+        // Fixes an error if the window to create a playlist and the window to add songs are open at the same time
+        if (document.getElementById('listOfPlaylist')) {
+            UICtrl.removeWindowToAddTracksToPlaylist();
+        }
+
         UICtrl.showWindowToCreateNewPlaylist();
         const DOMbuttons = UICtrl.buttonField();
 
