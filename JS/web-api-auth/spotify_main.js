@@ -86,7 +86,7 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl, LocalStorageCtrl){
                 // Get extra info 
                 /*
                 Para cargar la información extra de canción necesito poner async a la función flecha pero eso conlleva  
-                una desincronización con todo el proceso de adición de filas, pero en si el array de canciones está ordenado.
+                una desincronización con todo el proceso de adición de filas aunque el array de canciones este ordenado.
                 const extraInfoTrack = await APICtrl.getTrack(token, trackEndPoint);
                 const {
                     artists : [{external_urls : {spotify : spotifyArtist}}],
@@ -277,7 +277,7 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl, LocalStorageCtrl){
             // Get checkboxs selected
             const checkboxSelected = DOMcontainers.tracksPlaylist.querySelectorAll("input[type=checkbox]:checked")
             if (checkboxSelected != 0) {
-                // Get name tracks PRUEBA CON NOMBRE
+                // Get name tracks 
                 const tracks = [...checkboxSelected].map((checkbox) => checkbox.track.name)
                 // Remove tracks selected
                 playlist.removeTracks(tracks);
@@ -291,7 +291,7 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl, LocalStorageCtrl){
 
     })
 
-    // Play and display img of song
+    // Play and display image of song
     DOMcontainers.tracksPlaylist.addEventListener('click', async (e) => {
         // Get stored token
         const token = UICtrl.getStoredToken().token;
@@ -329,6 +329,7 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl, LocalStorageCtrl){
         }
 
         UICtrl.showWindowToCreateNewPlaylist();
+        // Get buttons { cancel, create }
         const DOMbuttons = UICtrl.buttonField();
 
         DOMbuttons.buttonCancelPlaylist.addEventListener('click', (e) => {
