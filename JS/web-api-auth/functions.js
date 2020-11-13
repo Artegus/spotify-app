@@ -389,25 +389,11 @@ const UIController_Main = (function() {
          * @param {User} user default User
          * @param {number} status  1 for created or 0 for new
          */
-        createNewUserPlaylist(name, user, status, createdPlaylist = []) { // Crea una nueva playlist del usuario. EL nombre de la función puede confundir
+        createNewUserPlaylist(name, user, status, listOfTracks = [], totalDuration = 0) { // Crea una nueva playlist del usuario. EL nombre de la función puede confundir
             // A la función de arriba cambiar createdPlaylist por listOfTrack y añadir totalDuration 
             if (status == 1) { // Playlists from localStorage
-                // Convert all tracks to object Track (Optional, move to spotify_main)
-                const listOftracks = createdPlaylist._listOfTracks.map((track) => {
-                    const {
-                        _name : name,
-                        _album : album,
-                        _artist : artist,
-                        _duration : duration,
-                        _dateAdded : dateAdded,
-                        _urlPreview : urlPreview,
-                        _trackEndPoint : trackEndPoint
-                    } = track
-                    
-                    return new Track(name, artist, album, duration, dateAdded, urlPreview, trackEndPoint)
-                })
                 // Create a new object of playlist from the stored
-                const playlist = new Playlist(name, listOftracks)
+                const playlist = new Playlist(name, listOfTracks, totalDuration)
                 // Create item list 
                 const itemList_playlist = document.createElement('li')
                 // Create content
@@ -527,7 +513,7 @@ const UIController_Main = (function() {
 // Audio Controller
 const audioPlayer = (function(UICtrl) {
 
-    // Private method
+    // Private methods
     const _playAudioHTML = (track_previuw_url) => {
         if (track_previuw_url != 'null') {  // Check if the track has a preview
             const audio = document.getElementById('audio')
