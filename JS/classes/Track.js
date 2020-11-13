@@ -12,13 +12,13 @@ class Track {
 
     // Getters
     get name () {
-        return this._name;
+        return this._name.toLocaleUpperCase();
     }
     get artist () {
-        return this._artist;
+        return this._artist.toLocaleUpperCase();
     }
     get album () {
-        return this._album;
+        return this._album.toLocaleUpperCase();
     }
     get duration () {
         return this._duration;
