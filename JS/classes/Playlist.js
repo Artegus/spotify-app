@@ -21,8 +21,18 @@ class Playlist {
         this._amountOftracks = this.calculateAmountOfTracks();
     }
 
-    removeTrack() {
-
+    removeTracks(tracksTodelete = []) {
+        //this._listOfTracks = this._listOfTracks.filter((track) => !tracksTodelete.includes(track.name)); If the song is duplicated, it will remove all these
+        // Delete tracks
+        tracksTodelete.forEach((trackToDelete) => {
+            var positionTrack = this._listOfTracks.findIndex((track) => track.name === trackToDelete)
+            if (positionTrack != -1) {
+                this._listOfTracks.splice(positionTrack, 1)
+            }
+        });
+        // Update the duration of the playlist and the number of songs
+        this._totalDuration = this.calculateDuration();
+        this._amountOftracks = this.calculateAmountOfTracks();
     }
     
     // Functions
@@ -34,32 +44,11 @@ class Playlist {
         return this._listOfTracks.length;
     }
 
-    showPlaylist () {
-        console.log(this._listOfTracks);
+    searchTrack (trackName) { // Solo encuentra canciones con el nombre exacto, incluye espacios
+        const trackFound = this._listOfTracks.filter((track) => track.name == trackName)
+        return trackFound
     }
 
-    orderByDurationASC () {
-        this._listOfTracks.sort((track1, track2) => track1.duration - track2.duration);
-    }
-    orderByDurationDES() {
-        this._listOfTracks.sort((track1, track2) => track2.duration - track1.duration);
-    }
-
-    orderByNameASC () {
-        this._listOfTracks.sort((track1, track2) => track1.name.localeCompare(track2.name))
-    }
-    orderByNameDES() {
-        this._listOfTracks.sort((track1, track2) => track2.name.localeCompare(track1.name))
-    }
-    orderByAlbumASC () {
-        this._listOfTracks.sort((track1, track2) => track1.album.localeCompare(track2.album))
-    }
-    orderByAlbumDES () {
-        this._listOfTracks.sort((track1, track2) => track2.album.localeCompare(track1.album))
-    }
-    orderByAlbumASC () {
-
-    }
     /**
      * 
      * @param {string} property 
@@ -73,11 +62,11 @@ class Playlist {
             this._listOfTracks.sort((track1, track2) => track1.duration - track2.duration)
             : this._listOfTracks.sort((track1, track2) =>track2.duration - track1.duration)
         : property == 'album' ? typeOfOrder === 0 ? 
-            this._listOfTracks.sort((track1, track2) => track1.album - track2.album)
-            : this._listOfTracks.sort((track1, track2) => track2.album - track1.album)
+            this._listOfTracks.sort((track1, track2) => track1.album.localeCompare(track2.album))
+            : this._listOfTracks.sort((track1, track2) => track2.album.localeCompare(track1.album))
         : typeOfOrder === 0 ? // Last is for artist
-            this._listOfTracks.sort((track1, track2) => track1.artist - track2.artist)
-            : this._listOfTracks.sort((track1, track2) => track2.artist - track1.artist)
+            this._listOfTracks.sort((track1, track2) => track1.artist.localeCompare(track2.artist))
+            : this._listOfTracks.sort((track1, track2) => track2.artist.localeCompare(track1.artist))
     }
 
 
