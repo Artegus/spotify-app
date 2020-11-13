@@ -4,7 +4,7 @@ const APIcontroller = (function() {
     const client_id = '49a52023a4f447ce86507bc0e636fed1'; // Your client ID
     const client_secret = '39c63715bd964d58af65657966b99172'; // Your client secrect
 
-    const _getToken = async () => { // OK. Solicitar token. (Dura una hora)
+    const _getToken = async () => { // La validez de la token es de una hora.
         // Petición al servicio de spotify
         const response = await fetch('https://accounts.spotify.com/api/token', { 
             method : 'POST',
@@ -136,12 +136,12 @@ const APIcontroller = (function() {
 
 })();
 
-
+// Controller for spotify_overview
 const UIController_Overview = (function() {
 
     //Object to hold references to html selects.
     const DOMElements = {
-        parentContainer : '.parent',
+        parentContainer : '.parent'
     }
 
     const elements = {
@@ -209,7 +209,7 @@ const UIController_Overview = (function() {
     }
 })();
 
-
+// Controller for spotify_home
 const UIController_Main = (function() {
 
     const DOMElements = {
@@ -255,7 +255,7 @@ const UIController_Main = (function() {
                 imagePreviewTrack : document.querySelector(DOMElements.imagePreviewTrack),
                 headerPlaylist : document.querySelector(DOMElements.headerPlaylist),
                 tracksPlaylist : document.querySelector(DOMElements.tracksTableBody),
-                contentMainPlaylist : document.querySelector(DOMElements.contentMainPage), // Este no lo uso.
+                contentMainPlaylist : document.querySelector(DOMElements.contentMainPage), // Sin uso
                 extraInfoPlaylist : document.querySelector(DOMElements.extraInfoPlaylist),
                 recommendPlaylists : document.querySelector(DOMElements.recommendPlaylists),
                 buttonNewPlaylist : document.querySelector(DOMElements.createANewPlaylist),
@@ -282,7 +282,7 @@ const UIController_Main = (function() {
                 deleteTracks : document.querySelector(DOMbuttons.deleteSelected)
             }
         },
-        createPlaylist(name, api_url_playlist, tracksEndPoint){
+        createPlaylist(name, api_url_playlist, tracksEndPoint){ // list element 
             const html = `<li><a href='#' helper=${tracksEndPoint} value=${api_url_playlist}>${name}</a></li>`;
             document.querySelector(DOMElements.recommendPlaylists).insertAdjacentHTML('beforeend', html)
         },
@@ -351,7 +351,7 @@ const UIController_Main = (function() {
             `;
             document.querySelector(DOMElements.extraInfoPlaylist).innerHTML = html;
         },
-        createUserPlaylistInfo(name, description, imageUrl, followers, totalDuration){ // USER PLAYLIST PLEASE ADD BUTTONS
+        createUserPlaylistInfo(name, description, imageUrl, followers, totalDuration){ 
             const duration = formatDurationOfPlaylist(totalDuration)
             const html = `
             <div class="ng-isolate-scope ng-pristine ng-valid">
@@ -382,7 +382,7 @@ const UIController_Main = (function() {
             `;
             document.querySelector(DOMElements.headerPlaylist).innerHTML = html;
         },
-        createNewUserPlaylist(name, user) { // Crea na nueva playlist del usuario. EL nombre de la función puede confundir
+        createNewUserPlaylist(name, user) { // Crea una nueva playlist del usuario. EL nombre de la función puede confundir
             // Create a playlist object
             const playlist = new Playlist(name)
             // Create item list 
@@ -399,7 +399,7 @@ const UIController_Main = (function() {
             // Add to playlists user
             document.querySelector(DOMElements.userPlaylists).insertAdjacentElement('beforeend', itemList_playlist)
         },
-        showSongMessageNotAvailable() {
+        showMessageSongNotAvailable() {
             const html = `
             <div id='songNotAvailable'>
                 <p>Sorry, the song is not available.</p>
@@ -494,7 +494,7 @@ const audioPlayer = (function(UICtrl) {
             audio.src = track_previuw_url;
             audio.play();
         } else { // Show a message if the track not have a preview
-            UICtrl.showSongMessageNotAvailable();
+            UICtrl.showMessageSongNotAvailable();
             window.setTimeout(UICtrl.removeMessageSongNotAvailable, 2500) // Remove message after 2.5 seconds
         }
     }
