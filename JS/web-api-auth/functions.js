@@ -382,22 +382,62 @@ const UIController_Main = (function() {
             `;
             document.querySelector(DOMElements.headerPlaylist).innerHTML = html;
         },
-        createNewUserPlaylist(name, user) { // Crea una nueva playlist del usuario. EL nombre de la función puede confundir
-            // Create a playlist object
-            const playlist = new Playlist(name)
-            // Create item list 
-            const itemList_playlist = document.createElement('li')
-            // Create content
-            const a_playlist = document.createElement('a')
-            a_playlist.href = `#${name}`
-            a_playlist.innerHTML = name;
-            a_playlist.playlist = playlist
-            // Include content in item list
-            itemList_playlist.appendChild(a_playlist)
-            // Add playlist to user
-            user.addNewPlaylist(playlist)
-            // Add to playlists user
-            document.querySelector(DOMElements.userPlaylists).insertAdjacentElement('beforeend', itemList_playlist)
+        // REPAIR THIS OR CREATE A NEW FUNCTION
+        /**
+         * 
+         * @param {string} name name of Playlist
+         * @param {User} user default User
+         * @param {number} status  1 for created or 0 for new
+         */
+        createNewUserPlaylist(name, user, status, createdPlaylist = []) { // Crea una nueva playlist del usuario. EL nombre de la función puede confundir
+            // A la función de arriba cambiar createdPlaylist por listOfTrack y añadir totalDuration 
+            if (status == 1) { // Playlists from localStorage
+                // Convert all tracks to object Track (Optional, move to spotify_main)
+                const listOftracks = createdPlaylist._listOfTracks.map((track) => {
+                    const {
+                        _name : name,
+                        _album : album,
+                        _artist : artist,
+                        _duration : duration,
+                        _dateAdded : dateAdded,
+                        _urlPreview : urlPreview,
+                        _trackEndPoint : trackEndPoint
+                    } = track
+                    
+                    return new Track(name, artist, album, duration, dateAdded, urlPreview, trackEndPoint)
+                })
+                // Create a new object of playlist from the stored
+                const playlist = new Playlist(name, listOftracks)
+                // Create item list 
+                const itemList_playlist = document.createElement('li')
+                // Create content
+                const a_playlist = document.createElement('a')
+                a_playlist.href = `#${name}`
+                a_playlist.innerHTML = name;
+                a_playlist.playlist = playlist
+                // Include content in item list
+                itemList_playlist.appendChild(a_playlist)
+                // Add to playlists user
+                user.addNewPlaylist(playlist)
+                // Add to UI 
+                document.querySelector(DOMElements.userPlaylists).insertAdjacentElement('beforeend', itemList_playlist)
+            } else { // If the playlist is new
+                // Create a playlist object
+                const playlist = new Playlist(name)
+                // Create item list 
+                const itemList_playlist = document.createElement('li')
+                // Create content
+                const a_playlist = document.createElement('a')
+                a_playlist.href = `#${name}`
+                a_playlist.innerHTML = name;
+                a_playlist.playlist = playlist
+                // Include content in item list
+                itemList_playlist.appendChild(a_playlist)
+                // Add playlist to user
+                user.addNewPlaylist(playlist)
+                // Add to playlists user
+                document.querySelector(DOMElements.userPlaylists).insertAdjacentElement('beforeend', itemList_playlist)
+            }
         },
         showMessageSongNotAvailable() {
             const html = `
