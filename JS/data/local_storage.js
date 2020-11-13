@@ -1,31 +1,27 @@
 
-const LocaleStorageController = (function() {
+const LSController = (function () {
 
-    const _saveUserPlaylists = (user) => {
-        localStorage.setItem('Playlists', user.playlist)
+    const _saveUserPlaylist = (user) => {
+        const playlist = JSON.stringify(user.playlist) // convert object to JSON string
+        localStorage.setItem('playlists', playlist)
     }
 
-    const _updateUserPLaylist = (playlist) => {
-        localStorage.setItem('Playlists', playlist)
-    }
-    
     const _getUserPlaylist = () => {
-        const playlists = localStorage.getItem('Playlists')
-        console.log(playlists)
+        const data = localStorage.getItem('playlists')
+        const playlist = JSON.parse(data) // convert JSON string to JavaScript object o value
+
+        return playlist;
     }
 
-    return{
-        saveUserPlaylists (user) {
-            return _saveUserPlaylists(user)
+    return {
+        saverUserPlaylist (user) {
+            return _saveUserPlaylist(user);
         },
-        getUserPlaylist(){
+        getUserPlaylist() {
             return _getUserPlaylist();
-        },
-        updateUserPlaylist (playlist) {
-            _updateUserPLaylist(playlist)
         }
     }
 
 })();
 
-export {LocaleStorageController};
+export {LSController};
