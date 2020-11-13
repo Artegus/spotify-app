@@ -27,7 +27,7 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
         })
     }
     // Displays the songs from the playlists created by the user
-    const mostrarCanciones = async (playlist) => {
+    const mostrarCanciones = (playlist) => {
         // Clear the tracks section
         UICtrl.resetTracks();
         // Get stored token
@@ -37,7 +37,7 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
         var randomNumber = 1//Math.floor(Math.random() * 2 + 1); // 1 = En forma de tabla; 2 = Imagenes de las canciones como en spotify_overview
         var posicionFila = 0; // Necessary to place the input checkbox
         if(randomNumber == 1) {
-            playlist.forEach( async (track) => {
+            playlist.forEach((track) => {
                 // Get info
                 const {
                     _album : album,
@@ -49,14 +49,17 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl){
                     _urlPreview : urlPreview,
                 } = track;
                 // Get extra info 
+                /*
+                Para cargar la información extra de canción necesito poner async a la función flecha pero eso conlleva  
+                una desincronización con todo el proceso de adición de filas, pero en si el array de canciones está ordenado.
                 const extraInfoTrack = await APICtrl.getTrack(token, trackEndPoint);
                 const {
                     artists : [{external_urls : {spotify : spotifyArtist}}],
                     external_urls : { spotify : spotifySong}
-                } = extraInfoTrack;
+                } = extraInfoTrack; */
                 posicionFila++;
                 // Add track to tbody
-                UICtrl.createTrack(trackName, artist, duration, album, dateAdded, urlPreview, trackEndPoint, spotifySong, spotifyArtist, posicionFila);
+                UICtrl.createTrack(trackName, artist, duration, album, dateAdded, urlPreview, trackEndPoint, 'spotifySong', 'spotifyArtist', posicionFila);
             })
         } else {
             // Second way. Working...!
