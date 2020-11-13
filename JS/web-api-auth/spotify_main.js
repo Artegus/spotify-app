@@ -9,6 +9,7 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl, LocalStorageCtrl){
     const defaultUser = new User();
     // Save playlists of user default. 
     if(!localStorage.getItem('playlists')){
+        // If no playlists are saved, create a new value for local storage 
         LocalStorageCtrl.saverUserPlaylists(defaultUser);
     }
     const loadRecommendedPlaylists = async () => {
@@ -30,12 +31,13 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl, LocalStorageCtrl){
             UICtrl.createPlaylist(playlistName, api_url_playlist, tracksEndPoint);
         })
     }
+    // MODIFY (optional)
     const loadUserPlaylists = () => {
-        // Get user playlist
+        // Get user playlists
         const userPlaylists = LocalStorageCtrl.getUserPlaylists();
         if (userPlaylists.length != 0) {
             userPlaylists.forEach((playlist) => {
-                
+                // Get info of playlist 
                 const {
                     _amountOftracks : amountOftracks,
                     _listOfTracks : listOfTracks,
@@ -52,9 +54,6 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl, LocalStorageCtrl){
     const mostrarCanciones = (playlist) => {
         // Clear the tracks section
         UICtrl.resetTracks();
-        // Get stored token
-        //const token = UICtrl.getStoredToken().token
-
         // Display the tracks in two different ways
         var randomNumber = 1//Math.floor(Math.random() * 2 + 1); // 1 = En forma de tabla; 2 = Imagenes de las canciones como en spotify_overview
         var posicionFila = 0; // Necessary to place the input checkbox
