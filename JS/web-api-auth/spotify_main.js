@@ -1,5 +1,5 @@
 import {APIcontroller, UIController_Main, audioPlayer} from './functions.js';
-import {LocaleStorageController} from '../data/local_storage.js';
+import {LSController} from '../data/local_storage.js';
 
 const APPController = (function(APICtrl, UICtrl, AUDIOCtrl, LocalStorageCtrl){
 
@@ -7,7 +7,10 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl, LocalStorageCtrl){
     const DOMcontainers = UICtrl.containerField();
     // Create a default user
     const defaultUser = new User();
-    
+    // Save playlists of user default. 
+    if(!localStorage.getItem('playlists')){
+        LocalStorageCtrl.saverUserPlaylists(defaultUser);
+    }
     const loadRecommendedPlaylists = async () => {
         // Get token
         const token = await APICtrl.getToken()
@@ -27,12 +30,30 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl, LocalStorageCtrl){
             UICtrl.createPlaylist(playlistName, api_url_playlist, tracksEndPoint);
         })
     }
+    const loadUserPlaylists = () => {
+        // Get user playlist
+        const userPlaylists = LocalStorageCtrl.getUserPlaylists();
+        if (userPlaylists.length != 0) {
+            userPlaylists.forEach((playlist) => {
+                
+                const {
+                    _amountOftracks : amountOftracks,
+                    _listOfTracks : listOfTracks,
+                    _name : namePlaylist,
+                    _owner : ownerPlaylist,
+                    _totalDuration : totalDuration
+                } = playlist 
+
+                UICtrl.createNewUserPlaylist(namePlaylist, defaultUser, 1, playlist);
+            })
+        }
+    }
     // Displays the songs from the playlists created by the user
     const mostrarCanciones = (playlist) => {
         // Clear the tracks section
         UICtrl.resetTracks();
         // Get stored token
-        const token = UICtrl.getStoredToken().token
+        //const token = UICtrl.getStoredToken().token
 
         // Display the tracks in two different ways
         var randomNumber = 1//Math.floor(Math.random() * 2 + 1); // 1 = En forma de tabla; 2 = Imagenes de las canciones como en spotify_overview
@@ -132,7 +153,7 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl, LocalStorageCtrl){
         // Event added to button 'Add to Playlist' to show the window of adding songs to a playlist
         document.getElementById('addToPlaylist').addEventListener('click', (e) => {
             // Get user playlists
-            const userPlaylists = defaultUser.playlist;
+            const userPlaylists = defaultUser.playlists;
             // Fixes an error if the window to create a playlist and the window to add songs are open at the same time
             if (document.getElementById('createNewPlaylist')) {
                 UICtrl.removeWindowToCreateNewPlaylist()
@@ -151,6 +172,8 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl, LocalStorageCtrl){
                 const playlistSelected = selectedElement.playlist
                 // Add tracks to playlist
                 playlistSelected.listOfTracks = tracksSelected;
+                // Update the User playlist with songs
+                LocalStorageCtrl.saverUserPlaylists(defaultUser);
                 // Close the window
                 UICtrl.removeWindowToAddTracksToPlaylist();
             })
@@ -242,6 +265,8 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl, LocalStorageCtrl){
                 const tracks = [...checkboxSelected].map((checkbox) => checkbox.track.name)
                 // Remove tracks selected
                 playlist.removeTracks(tracks);
+                // Update  the User playlist with songs
+                LocalStorageCtrl.saverUserPlaylists(defaultUser);
                 // Refresh tracks
                 mostrarCanciones(listOfUserTracks);
             }
@@ -296,7 +321,9 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl, LocalStorageCtrl){
             const namePlaylist = document.getElementById('namePlaylist').value
             // Add new playlist to user
             if (namePlaylist != '') {
-                UICtrl.createNewUserPlaylist(namePlaylist, defaultUser);
+                UICtrl.createNewUserPlaylist(namePlaylist, defaultUser, 0);
+                // Save new playlists in local Storage
+                LocalStorageCtrl.saverUserPlaylists(defaultUser);
             }
             UICtrl.removeWindowToCreateNewPlaylist();
         })
@@ -321,10 +348,11 @@ const APPController = (function(APICtrl, UICtrl, AUDIOCtrl, LocalStorageCtrl){
         init() {
             // Initial loading of recommended playlists
             loadRecommendedPlaylists();
+            loadUserPlaylists();
             console.log('ok :)');
         }
     }
 
-})(APIcontroller, UIController_Main, audioPlayer, LocaleStorageController);
+})(APIcontroller, UIController_Main, audioPlayer, LSController);
 
 APPController.init();
