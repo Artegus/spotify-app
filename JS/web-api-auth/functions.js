@@ -1,18 +1,18 @@
 
-const APIcontroller = (function() {
+const APIcontroller = (function () {
 
     const client_id = '49a52023a4f447ce86507bc0e636fed1'; // Your client ID
     const client_secret = '39c63715bd964d58af65657966b99172'; // Your client secrect
 
     const _getToken = async () => { // La validez de la token es de una hora.
         // Petición al servicio de spotify
-        const response = await fetch('https://accounts.spotify.com/api/token', { 
-            method : 'POST',
-            headers : {
-                'Content-Type' : 'application/x-www-form-urlencoded',
-                'Authorization' : 'Basic ' + btoa(client_id + ':' + client_secret)
+        const response = await fetch('https://accounts.spotify.com/api/token', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'Basic ' + btoa(client_id + ':' + client_secret)
             },
-            body : 'grant_type=client_credentials'
+            body: 'grant_type=client_credentials'
         })
 
         const data = await response.json()
@@ -22,9 +22,9 @@ const APIcontroller = (function() {
     const _getCategories = async (token) => { // OK. Solicitar categorias
         const limit = 10;
         const response = await fetch(`https://api.spotify.com/v1/browse/categories?locale=sv_US&limit=${limit}`, {
-            method : 'GET',
-            headers : {
-                'Authorization' : 'Bearer ' + token
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token
             }
         })
         const data = await response.json()
@@ -35,9 +35,9 @@ const APIcontroller = (function() {
         const limit = 15;
 
         const response = await fetch(`https://api.spotify.com/v1/browse/categories/${categoryId}/playlists?locale=sv_US&limit=${limit}`, {
-            method : 'GET',
-            headers : {
-                'Authorization' : 'Bearer ' + token
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token
             }
         })
 
@@ -48,9 +48,9 @@ const APIcontroller = (function() {
     const _getTracks = async (token, tracksEndPoint) => { //OK. Solicita canciones de una playlist.
         const limit = 25;
         const response = await fetch(`${tracksEndPoint}?limit=${limit}`, {
-            method : 'GET',
-            headers : {
-                'Authorization' : 'Bearer ' + token
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token
             }
         })
         const data = await response.json();
@@ -60,9 +60,9 @@ const APIcontroller = (function() {
 
     const _getTrack = async (token, trackEndPoint) => { // OK. Solicita una canción de una playlist
         const response = await fetch(`${trackEndPoint}`, {
-            method : 'GET',
+            method: 'GET',
             headers: {
-                'Authorization' : 'Bearer ' + token
+                'Authorization': 'Bearer ' + token
             }
         })
         const data = await response.json();
@@ -71,9 +71,9 @@ const APIcontroller = (function() {
 
     const _getListOfNewReleases = async (token) => {
         const response = await fetch(`https://api.spotify.com/v1/browse/new-releases?limit=10`, {
-            method : 'GET',
-            headers : {
-                'Authorization' : 'Bearer ' + token
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token
             }
         })
 
@@ -84,9 +84,9 @@ const APIcontroller = (function() {
     const _getListOfFeaturedPlaylist = async (token) => {
         // This url is only for testing
         const response = await fetch("https://api.spotify.com/v1/browse/featured-playlists?locale=sv_US&limit=10", {
-            method : 'GET',
-            headers : {
-                'Authorization' : 'Bearer ' + token
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token
             }
         })
         const data = await response.json()
@@ -95,9 +95,9 @@ const APIcontroller = (function() {
 
     const _getPlaylist = async (token, api_url_playlist) => {
         const response = await fetch(api_url_playlist, {
-            method : 'GET',
-            headers : {
-                'Authorization' : 'Bearer ' + token
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token
             }
         })
         const data = await response.json()
@@ -126,26 +126,26 @@ const APIcontroller = (function() {
         getTracks(token, tracksEndPoint) {
             return _getTracks(token, tracksEndPoint);
         },
-        getTrack(token, trackEndPoint){
+        getTrack(token, trackEndPoint) {
             return _getTrack(token, trackEndPoint);
         },
         getPlaylist(token, api_url_playlist) {
             return _getPlaylist(token, api_url_playlist);
-        } 
+        }
     }
 
 })();
 
 // Controller for spotify_overview
-const UIController_Overview = (function() {
+const UIController_Overview = (function () {
 
     //Object to hold references to html selects.
     const DOMElements = {
-        parentContainer : '.parent'
+        parentContainer: '.parent'
     }
 
     const elements = {
-        parents : document.querySelectorAll(DOMElements.parentContainer)
+        parents: document.querySelectorAll(DOMElements.parentContainer)
     }
 
     return {
@@ -165,7 +165,7 @@ const UIController_Overview = (function() {
                 </div>
             </div>
             `;
-            elements.parents[0].insertAdjacentHTML('beforeend',html)
+            elements.parents[0].insertAdjacentHTML('beforeend', html)
         },
 
         createPlaylist(name, img_url, img_width, img_height, spotify_url, number) {
@@ -210,79 +210,79 @@ const UIController_Overview = (function() {
 })();
 
 // Controller for spotify_home
-const UIController_Main = (function() {
+const UIController_Main = (function () {
 
     const DOMElements = {
-        titleRecommendAlbum : '#title-recommend-album', 
-        recommendPlaylists : '#recommend-playlists', 
-        userPlaylists : '#user-playlists', 
-        imagePreviewTrack : '#image-track-preview', 
-        headerPlaylist : '#header-playlist', 
-        contentMainPage : '#content-main', // Podria usar solo este id para crear todo el contenido de la playlist.
-        extraInfoPlaylist : '#extra-info-playlist', 
-        tracksTableBody : '#list-tracks',
-        hiddenToken : '#hidden_token',
-        createANewPlaylist : '#newPlaylist',
-        buttonCreatePlaylist : 'createPlaylist',
-        buttonCancelPlaylist : 'cancelPlaylist',
-        buttonAddToPlaylist : 'addToPlaylist'
+        titleRecommendAlbum: '#title-recommend-album',
+        recommendPlaylists: '#recommend-playlists',
+        userPlaylists: '#user-playlists',
+        imagePreviewTrack: '#image-track-preview',
+        headerPlaylist: '#header-playlist',
+        contentMainPage: '#content-main', // Podria usar solo este id para crear todo el contenido de la playlist.
+        extraInfoPlaylist: '#extra-info-playlist',
+        tracksTableBody: '#list-tracks',
+        hiddenToken: '#hidden_token',
+        createANewPlaylist: '#newPlaylist',
+        buttonCreatePlaylist: 'createPlaylist',
+        buttonCancelPlaylist: 'cancelPlaylist',
+        buttonAddToPlaylist: 'addToPlaylist'
         // podría crear todo lo que va dentro del contenido de cada playlist desde su padre usado el id de content-main
         // Creando primero el header (playlist info), luego la infoextra (playlist más info), track preview y por último la tabla con las canciones.
     }
-    const DOMbuttons =  {
-        nameASC : '#orderByTrackNameASC',
-        nameDES : '#orderByTrackNameDES',
-        search : '#searchTrack',
-        durationASC : '#orderByDurationASC',
-        durationDES : '#orderByDurationDES',
-        albumASC : '#orderByAlbumASC',
-        albumDES : '#orderByAlbumDES',
-        artistASC : '#orderByArtistASC',
-        artistDES : '#orderByArtistDES',
-        deleteSelected : '#deleteSelected'
+    const DOMbuttons = {
+        nameASC: '#orderByTrackNameASC',
+        nameDES: '#orderByTrackNameDES',
+        search: '#searchTrack',
+        durationASC: '#orderByDurationASC',
+        durationDES: '#orderByDurationDES',
+        albumASC: '#orderByAlbumASC',
+        albumDES: '#orderByAlbumDES',
+        artistASC: '#orderByArtistASC',
+        artistDES: '#orderByArtistDES',
+        deleteSelected: '#deleteSelected'
     }
 
     const formatDurationOfPlaylist = (seconds) => {
-        return new Date(seconds * 1000).toISOString().substr(11,8);
+        return new Date(seconds * 1000).toISOString().substr(11, 8);
     }
     const formatDurationOfTrack = (seconds) => {
-        return new Date(seconds * 1000).toISOString().substr(14,5);
+        return new Date(seconds * 1000).toISOString().substr(14, 5);
     }
 
     return {
         containerField() {
             return {
-                imagePreviewTrack : document.querySelector(DOMElements.imagePreviewTrack),
-                headerPlaylist : document.querySelector(DOMElements.headerPlaylist),
-                tracksPlaylist : document.querySelector(DOMElements.tracksTableBody),
-                contentMainPlaylist : document.querySelector(DOMElements.contentMainPage), // Sin uso
-                extraInfoPlaylist : document.querySelector(DOMElements.extraInfoPlaylist),
-                recommendPlaylists : document.querySelector(DOMElements.recommendPlaylists),
-                buttonNewPlaylist : document.querySelector(DOMElements.createANewPlaylist),
-                userPlaylists : document.querySelector(DOMElements.userPlaylists)
+                imagePreviewTrack: document.querySelector(DOMElements.imagePreviewTrack),
+                headerPlaylist: document.querySelector(DOMElements.headerPlaylist),
+                tracksPlaylist: document.querySelector(DOMElements.tracksTableBody),
+                contentMainPlaylist: document.querySelector(DOMElements.contentMainPage), // Sin uso
+                extraInfoPlaylist: document.querySelector(DOMElements.extraInfoPlaylist),
+                recommendPlaylists: document.querySelector(DOMElements.recommendPlaylists),
+                buttonNewPlaylist: document.querySelector(DOMElements.createANewPlaylist),
+                userPlaylists: document.querySelector(DOMElements.userPlaylists)
             }
         },
-        buttonField(){
+        buttonField() {
             return {
-                buttonCreatePlaylist : document.getElementById(DOMElements.buttonCreatePlaylist),
-                buttonCancelPlaylist : document.getElementById(DOMElements.buttonCancelPlaylist)
+                buttonCreatePlaylist: document.getElementById(DOMElements.buttonCreatePlaylist),
+                buttonCancelPlaylist: document.getElementById(DOMElements.buttonCancelPlaylist)
             }
         },
         buttonFieldControls() {
             return {
-                orderByNameASC : document.querySelector(DOMbuttons.nameASC),
-                orderByNameDES : document.querySelector(DOMbuttons.nameDES),
-                searchTrack : document.querySelector(DOMbuttons.search),
-                orderByDurationASC : document.querySelector(DOMbuttons.durationASC),
-                orderByDurationDES : document.querySelector(DOMbuttons.durationDES),
-                orderByAlbumASC : document.querySelector(DOMbuttons.albumASC),
-                orderByAlbumDES : document.querySelector(DOMbuttons.albumDES),
-                orderByArtistASC : document.querySelector(DOMbuttons.artistASC),
-                orderByArtistDES : document.querySelector(DOMbuttons.artistDES),
-                deleteTracks : document.querySelector(DOMbuttons.deleteSelected)
+                orderByNameASC: document.querySelector(DOMbuttons.nameASC),
+                orderByNameDES: document.querySelector(DOMbuttons.nameDES),
+                searchTrack: document.querySelector(DOMbuttons.search),
+                orderByDurationASC: document.querySelector(DOMbuttons.durationASC),
+                orderByDurationDES: document.querySelector(DOMbuttons.durationDES),
+                orderByAlbumASC: document.querySelector(DOMbuttons.albumASC),
+                orderByAlbumDES: document.querySelector(DOMbuttons.albumDES),
+                orderByArtistASC: document.querySelector(DOMbuttons.artistASC),
+                orderByArtistDES: document.querySelector(DOMbuttons.artistDES),
+                deleteTracks: document.querySelector(DOMbuttons.deleteSelected)
             }
         },
-        createPlaylist(name, api_url_playlist, tracksEndPoint){ // Display recommend playlists 
+        createPlaylist(name, api_url_playlist, tracksEndPoint) { // Display recommend playlists 
             const html = `<li><a href='#' helper=${tracksEndPoint} value=${api_url_playlist}>${name}</a></li>`;
             document.querySelector(DOMElements.recommendPlaylists).insertAdjacentHTML('beforeend', html)
         },
@@ -295,31 +295,31 @@ const UIController_Main = (function() {
             // Duration in min:ss
             const formatedDuration = formatDurationOfTrack(duration)
             const html = `
-            <tr class="ng-scope">
+            <tr>
                 <td>
-                    <button class="ng-binding button-play" value=${url_preview} data-song=${trackEndPoint}></button>
+                    <button class="button-play" value=${url_preview} data-song=${trackEndPoint}></button>
                 </td>
                 <td>
-                    <a class="ng-binding" target='_blank' href=${urlSpotifySong}>${name}</a>
+                    <a target='_blank' href=${urlSpotifySong}>${name}</a>
                 </td>
                 <td>
-                    <a class="ng-binding" target='_blank' href=${urlSpotifyArtist}>${artist}</a>
+                    <a target='_blank' href=${urlSpotifyArtist}>${artist}</a>
                 </td>
-                <td class="nowrap ng-binding">${formatedDuration}</td>
+                <td class="nowrap ">${formatedDuration}</td>
                 <td>
-                    <a class="ng-binding">${album}</a>
+                    <a>${album}</a>
                 </td>
-                <td class="nowrap ng-binding">${dateAdded}</td>
+                <td class="nowrap">${dateAdded}</td>
             </tr>`;
             // Add to table
             document.querySelector(DOMElements.tracksTableBody).insertAdjacentHTML('beforeend', html)
             // Add to track
             document.getElementsByTagName('tr')[posicionFila].insertAdjacentElement('beforeend', inputCheckbox)
         },
-        createTrackPreview(name, urlSpotifyAlbum, nameArtist, imageUrl, artistId){
+        createTrackPreview(name, urlSpotifyAlbum, nameArtist, imageUrl, artistId) {
             const html = `
             <a target='_blank' href="${urlSpotifyAlbum}">
-                <img class="ng-isolate-scope ng-pristine ng-valid img-album-track" src=${imageUrl} />
+                <img class="img-album-track" src=${imageUrl} />
             </a>
             <p>
                 <b>${name}</b>
@@ -328,43 +328,43 @@ const UIController_Main = (function() {
             `;
             document.querySelector(DOMElements.imagePreviewTrack).innerHTML = html;
         },
-        createPlaylistInfo(name, description, imageUrl, followers){
+        createPlaylistInfo(name, description, imageUrl, followers) {
             const html = `
-            <div class="ng-isolate-scope ng-pristine ng-valid">
-                <div class="cover"
+            <div>
+                <div
                     style="background-image:url(${imageUrl})">
                 </div>
             </div>
-            <h4 class="ng-hide">COLLABORATIVE PLAYLIST</h4>
-            <h4 class="">PLAYLIST</h4>
-            <h1 class="ng-binding">${name}</h1>
-            <p class="ng-binding">${description}</p>
-            <div class="follower-count ng-binding">${followers} followers</div>
+            <h4>COLLABORATIVE PLAYLIST</h4>
+            <h4>PLAYLIST</h4>
+            <h1>${name}</h1>
+            <p>${description}</p>
+            <div class="follower-count">${followers} followers</div>
             `;
             document.querySelector(DOMElements.headerPlaylist).innerHTML = html;
         },
-        createPlaylistExtraInfo(owner, total_tracks){
+        createPlaylistExtraInfo(owner, total_tracks) {
             const html = `
-            <hr class="ng-scope">
-            <p class="ng-scope ng-binding">Created by: <a href="#" class="ng-binding">${owner}</a> · ${total_tracks} songs</p>
-            <hr class="ng-scope">
-            <br class="ng-scope">
+            <hr>
+            <p>Created by: <a href="#">${owner}</a> · ${total_tracks} songs</p>
+            <hr>
+            <br>
             `;
             document.querySelector(DOMElements.extraInfoPlaylist).innerHTML = html;
         },
-        createUserPlaylistInfo(name, description, imageUrl, followers, totalDuration){ 
+        createUserPlaylistInfo(name, description, imageUrl, followers, totalDuration) {
             const duration = formatDurationOfPlaylist(totalDuration)
             const html = `
-            <div class="ng-isolate-scope ng-pristine ng-valid">
+            <div>
                 <div class="cover"
                     style="background-image:url(${imageUrl})">
                 </div>
             </div>
-            <h4 class="ng-hide">PRIVATE PLAYLIST</h4>
-            <h4 class="">PLAYLIST</h4>
-            <h1 class="ng-binding">${name}</h1>
-            <p class="ng-binding">${description}</p>
-            <div class="follower-count ng-binding">${followers} followers · Duration ${duration}</div>
+            <h4>PRIVATE PLAYLIST</h4>
+            <h4>PLAYLIST</h4>
+            <h1>${name}</h1>
+            <p>${description}</p>
+            <div class="follower-count">${followers} followers · Duration ${duration}</div>
             <div class='buttons-options-table'>
                 <input class='search-input' id='search' type='text' placeholder='Search track...'>
                 <input id='searchTrack' class='button-default' type='button' value='Buscar'>
@@ -445,9 +445,9 @@ const UIController_Main = (function() {
                 </div>
             </div>
             `;
-            document.querySelector('.midgroup').insertAdjacentHTML('beforeend',html)
+            document.querySelector('.midgroup').insertAdjacentHTML('beforeend', html)
         },
-        showWindowToAddTracksToPlaylist(userPlaylists = []){
+        showWindowToAddTracksToPlaylist(userPlaylists = []) {
 
             const html = `
             <div id='listOfPlaylist'>
@@ -467,7 +467,7 @@ const UIController_Main = (function() {
                 const namePlaylist = playlist.name
                 const listElement = document.createElement('li')
                 const link = document.createElement('a')
-                link.href=`#${namePlaylist}`
+                link.href = `#${namePlaylist}`
                 link.innerHTML = namePlaylist
                 link.playlist = playlist;
                 listElement.appendChild(link)
@@ -475,16 +475,16 @@ const UIController_Main = (function() {
             })
 
         },
-        removeWindowToAddTracksToPlaylist(){
+        removeWindowToAddTracksToPlaylist() {
             document.querySelector('#listOfPlaylist').remove();
         },
-        removeWindowToCreateNewPlaylist(){
+        removeWindowToCreateNewPlaylist() {
             document.querySelector('#createNewPlaylist').remove();
         },
-        removeMessageSongNotAvailable(){
+        removeMessageSongNotAvailable() {
             document.getElementById('songNotAvailable').remove();
         },
-        resetTrackPreview(){
+        resetTrackPreview() {
             this.containerField().imagePreviewTrack.innerHTML = '';
         },
         resetTracks() {
@@ -493,16 +493,16 @@ const UIController_Main = (function() {
         resetPlaylistInfo() {
             this.containerField().headerPlaylist.innerHTML = '';
         },
-        addButtonToAddTracksToPlaylist(){
+        addButtonToAddTracksToPlaylist() {
             const html = `<input type='button'value='Add to Playlist' class='button-addToPlaylist button-default' id='addToPlaylist'>`
             document.querySelector(DOMElements.tracksTableBody).insertAdjacentHTML('beforeend', html)
         },
         storeToken(token) {
             document.querySelector(DOMElements.hiddenToken).value = token
         },
-        getStoredToken(){
+        getStoredToken() {
             return {
-                token : document.querySelector(DOMElements.hiddenToken).value
+                token: document.querySelector(DOMElements.hiddenToken).value
             }
         }
     }
@@ -511,7 +511,7 @@ const UIController_Main = (function() {
 
 
 // Audio Controller
-const audioPlayer = (function(UICtrl) {
+const audioPlayer = (function (UICtrl) {
 
     // Private methods
     const _playAudioHTML = (track_previuw_url) => {
@@ -526,11 +526,11 @@ const audioPlayer = (function(UICtrl) {
     }
 
     return {
-        playAudioHTML(track_previuw_url){
+        playAudioHTML(track_previuw_url) {
             return _playAudioHTML(track_previuw_url);
         }
     }
 
 })(UIController_Main);
 
-export {APIcontroller, UIController_Overview, UIController_Main, audioPlayer};
+export { APIcontroller, UIController_Overview, UIController_Main, audioPlayer };
